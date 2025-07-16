@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useEffect, useRef } from "react"
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
@@ -33,6 +33,7 @@ import {
   Monitor,
   ArrowRight,
   AlertCircle,
+  Loader2,
 } from "lucide-react"
 import {
   type OnboardingFormData,
@@ -55,6 +56,16 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
   const [completedSteps, setCompletedSteps] = useState<number[]>([])
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [showExitConfirm, setShowExitConfirm] = useState(false)
+
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (open || currentStep) {
+      setTimeout(() => {
+        scrollRef.current?.scrollTo({ top: 0, behavior: "auto" })
+      }, 0)
+    }
+  }, [open, currentStep])
 
   const totalSteps = 5
   const progress = (currentStep / totalSteps) * 100
@@ -85,7 +96,7 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
     trigger,
     getValues,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = form
 
   const watchedValues = watch()
@@ -93,7 +104,7 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
   const steps = [
     { number: 1, title: "Quem é você?", icon: User, schema: step1Schema },
     { number: 2, title: "Sobre a empresa", icon: Building, schema: step2Schema },
-    { number: 3, title: "Qual desafio?", icon: Target, schema: step3Schema },
+    { number: 3, title: "Quais desafios?", icon: Target, schema: step3Schema },
     { number: 4, title: "Seu objetivo", icon: Rocket, schema: step4Schema },
     { number: 5, title: "Quando começar?", icon: Calendar, schema: step5Schema },
   ]
@@ -111,7 +122,6 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
     { value: "agendamento", label: "Agendamento manual ou desorganizado", icon: Calendar },
     { value: "atendimento", label: "Atendimento lento ou ineficiente", icon: MessageCircle },
     { value: "visibilidade", label: "Falta de visibilidade sobre serviços", icon: BarChart3 },
-    { value: "conversao", label: "Baixa taxa de conversão digital", icon: Target },
     { value: "escalar", label: "Preciso escalar sem aumentar equipe", icon: Users },
   ]
 
@@ -164,7 +174,7 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
 
   const handleSubmit = async (data: OnboardingFormData) => {
     try {
-      const response = await sendLeadToN8N(data)
+      await sendLeadToN8N(data)
       setCompletedSteps((prev) => [...prev, currentStep])
 
       setTimeout(() => {
@@ -326,8 +336,8 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
             <Progress value={progress} className="h-1.5" />
           </div>
 
-          {/* Conteúdo do formulário com scroll independente */}
-          <div className="flex-1 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-purple-500/20 scrollbar-track-transparent">
+          {/* Conteúdo do formulário com scroll independente */}          
+          <div ref={scrollRef} className="flex-1 overflow-y-auto p-2 scrollbar-thin scrollbar-thumb-purple-500/20 scrollbar-track-transparent">
             <form onSubmit={form.handleSubmit(handleSubmit)}>
               <AnimatePresence mode="wait">
                 {/* Etapa 1: Quem é você? */}
@@ -770,10 +780,20 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
               {currentStep === totalSteps ? (
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+                  disabled={isSubmitting}
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 flex items-center"
                 >
-                  Enviar formulário
-                  <CheckCircle className="ml-2 w-4 h-4" />
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                      Enviando...
+                    </>
+                  ) : (
+                    <>
+                      Enviar formulário
+                      <CheckCircle className="ml-2 w-4 h-4" />
+                    </>
+                  )}
                 </Button>
               ) : (
                 <Button
