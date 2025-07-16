@@ -43,6 +43,7 @@ import {
   step4Schema,
   step5Schema,
 } from "@/lib/validations/onboarding"
+import { sendLeadToN8N } from "@/lib/sendLead"
 
 interface OnboardingModalProps {
   open: boolean
@@ -163,10 +164,7 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
 
   const handleSubmit = async (data: OnboardingFormData) => {
     try {
-      // Simular envio
-      await new Promise((resolve) => setTimeout(resolve, 1000))
-
-      console.log("Dados do formulário:", data)
+      const response = await sendLeadToN8N(data)
       setCompletedSteps((prev) => [...prev, currentStep])
 
       setTimeout(() => {
