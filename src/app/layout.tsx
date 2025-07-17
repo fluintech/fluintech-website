@@ -1,9 +1,16 @@
 import type React from "react"
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
 
 export const metadata: Metadata = {
   title: "Fluintech - Automação Inteligente com IA | Atendimento e Agendamentos",
@@ -38,10 +45,7 @@ export const metadata: Metadata = {
     description:
       "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
     images: ["/og-image.jpg"],
-  },
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: "#8b5cf6",
-    generator: 'v0.dev'
+  }
 }
 
 export default function RootLayout({
@@ -54,9 +58,9 @@ export default function RootLayout({
       <head>
         <link rel="canonical" href="https://fluintech.com.br" />
         <meta name="geo.region" content="BR" />
-        <meta name="geo.placename" content="São Paulo" />
-        <meta name="geo.position" content="-23.5505;-46.6333" />
-        <meta name="ICBM" content="-23.5505, -46.6333" />
+        <meta name="geo.placename" content="Paraná" />
+        <meta name="geo.position" content="-23.419018564247832;-51.93836327766127" />
+        <meta name="ICBM" content="-23.419018564247832, -51.93836327766127" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -71,12 +75,12 @@ export default function RootLayout({
               address: {
                 "@type": "PostalAddress",
                 addressCountry: "BR",
-                addressRegion: "SP",
-                addressLocality: "São Paulo",
+                addressRegion: "PR",
+                addressLocality: "Paraná",
               },
               contactPoint: {
                 "@type": "ContactPoint",
-                telephone: "+55-11-99999-9999",
+                telephone: "+55-44-99864-4440",
                 contactType: "customer service",
                 availableLanguage: "Portuguese",
               },
