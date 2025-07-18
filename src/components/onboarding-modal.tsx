@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from "react"
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
+import InputMask from "react-input-mask";
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
@@ -400,22 +401,39 @@ export function OnboardingModal({ open, onOpenChange }: OnboardingModalProps) {
                     )}
                   </div>
 
-                  {/* Telefone */}
+                  {/* Telefone (WhatsApp) */}
                   <div>
-                    <label className="block text-gray-300 mb-1.5 text-sm">Telefone *</label>
-                    <div className="relative">
-                      <Phone className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                      <Controller
-                        name="telefone"
-                        control={form.control}
-                        render={({ field }) => (
-                          <Input
-                            {...field}
-                            placeholder="(11) 99999-9999"
-                            className="bg-white/10 border-purple-500/30 text-white placeholder-gray-400 pl-8 pr-3 h-9"
-                          />
-                        )}
-                      />
+                    <label className="block text-gray-300 mb-1.5 text-sm">WhatsApp *</label>
+                    <div className="relative flex items-center">
+                      <span className="text-white text-sm px-2 bg-white/10 border border-purple-500/30 h-9 flex items-center rounded-l-md">
+                        🇧🇷 +55
+                      </span>
+                      <div className="relative flex-1">
+                        <Phone className="absolute left-2.5 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                        <Controller
+                          name="telefone"
+                          control={form.control}
+                          render={({ field }) => (
+                            <InputMask
+                              {...field}
+                              mask="(99) 99999-9999"
+                              maskChar=""
+                              onChange={(e) => {
+                                const raw = e.target.value.replace(/\D/g, ""); // remove tudo exceto números
+                                field.onChange(`${raw}`);
+                              }}
+                            >
+                              {(inputProps: any) => (
+                                <input
+                                  {...inputProps}
+                                  placeholder="(11) 99999-9999"
+                                  className="bg-white/10 border-purple-500/30 text-white placeholder-gray-400 pl-8 pr-3 h-9 w-full rounded-r-md"
+                                />
+                              )}
+                            </InputMask>
+                          )}
+                        />
+                      </div>
                     </div>
                     {errors.telefone && (
                       <p className="text-red-400 text-xs mt-1 flex items-center">
