@@ -421,7 +421,7 @@ export default function FluintechWebsite() {
                   <p className="text-xl text-gray-300 mb-8 leading-relaxed">
                     Somos uma startup brasileira especializada em automação inteligente para atendimento ao cliente e
                     agendamento de serviços. Nossa missão é democratizar o acesso à inteligência artificial para
-                    empresas de todos os tamanhos.
+                    empresas de pequeno porte e profissionais autônomos.
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
