@@ -1,5 +1,6 @@
 import type React from "react"
 import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata, Viewport } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
@@ -26,14 +27,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://fluintech.com.br",
+    url: "https://www.fluintech.com.br",
     siteName: "Fluintech",
     title: "Fluintech - Automação Inteligente com IA",
     description:
       "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Fluintech - Automação Inteligente",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     title: "Fluintech - Automação Inteligente com IA",
     description:
       "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   }
 }
 
@@ -57,7 +58,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <head>
-        <link rel="canonical" href="https://fluintech.com.br" />
+        <link rel="canonical" href="https://www.fluintech.com.br" />
         <meta name="geo.region" content="BR" />
         <meta name="geo.placename" content="Paraná" />
         <meta name="geo.position" content="-23.419018564247832;-51.93836327766127" />
@@ -69,8 +70,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "Organization",
               name: "Fluintech",
-              url: "https://fluintech.com.br",
-              logo: "https://fluintech.com.br/logo.png",
+              url: "https://www.fluintech.com.br",
+              logo: "https://www.fluintech.com.br/logo.png",
               description:
                 "Startup brasileira especializada em automação inteligente para atendimento ao cliente e agendamento de serviços com IA.",
               address: {
@@ -93,6 +94,7 @@ export default function RootLayout({
       <body className={inter.className}>
         {children}
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
