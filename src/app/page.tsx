@@ -30,6 +30,7 @@ import {
   Menu,
   X,
 } from "lucide-react"
+import { WhatsAppButton } from "@/components/whastapp-button"
 
 export default function FluintechWebsite() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -512,9 +513,9 @@ export default function FluintechWebsite() {
             <FadeInView delay={0.6}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
                 {[
-                  { icon: MapPin, title: "Endereço", info: "São Paulo, SP - Brasil" },
+                  { icon: MapPin, title: "Endereço", info: "Maringá, PR - Brasil" },
                   { icon: Mail, title: "E-mail", info: "contato@fluintech.com.br" },
-                  { icon: Phone, title: "Telefone", info: "(11) 9999-9999" },
+                  { icon: Phone, title: "Telefone", info: "(44) 99864-4440" },
                 ].map((contact, index) => (
                   <motion.div key={index} whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
                     <Card className="bg-white/5 backdrop-blur-md border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
@@ -538,13 +539,7 @@ export default function FluintechWebsite() {
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
                 >
-                  <Button
-                    size="lg"
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105"
-                  >
-                    <MessageCircle className="mr-2 w-6 h-6" />
-                    WhatsApp: Fale conosco agora
-                  </Button>
+                <WhatsAppButton />
                 </motion.div>
               </div>
             </FadeInView>
@@ -632,11 +627,10 @@ export default function FluintechWebsite() {
               </div>
             </FadeInView>
 
-            <FadeInView delay={0.3}>
-              <div className="border-t border-purple-500/20 pt-8 text-center">
-                <p className="text-gray-400">© 2024 Fluintech. Todos os direitos reservados.</p>
-              </div>
-            </FadeInView>
+            <div className="border-t border-purple-500/20 pt-8 text-center">
+              © {new Date().getFullYear()} Fluintech. Todos os direitos reservados.
+            </div>
+
           </div>
         </footer>
 
