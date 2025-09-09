@@ -1,660 +1,332 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { FadeInView } from "@/components/animations/fade-in-view"
-import { PageTransition } from "@/components/animations/page-transition"
-import { AutomationFlow } from "@/components/animations/automation-flow"
-import { OnboardingModal } from "@/components/onboarding-modal"
-import {
-  Bot,
-  Calendar,
-  Zap,
-  BarChart3,
-  ArrowRight,
-  Play,
-  Star,
-  Users,
-  Target,
-  Lightbulb,
-  MapPin,
-  Phone,
-  Mail,
-  MessageCircle,
-  ChevronLeft,
-  ChevronRight,
-  Menu,
-  X,
-} from "lucide-react"
-import { WhatsAppButton } from "@/components/whastapp-button"
+import { WhatsAppChat } from "@/components/whatsapp-chat"
+import { WorkflowSection } from "@/components/workflow-section"
+import { SolutionsGrid } from "@/components/solutions-grid"
+import { Footer } from "@/components/footer"
+import { DemoModal } from "@/components/demo-modal"
+import { Menu, X, Play, ArrowRight, Zap, Star } from "lucide-react"
 
-export default function FluintechWebsite() {
+export default function FluintechLanding() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [email, setEmail] = useState("")
-  const [showOnboardingForm, setShowOnboardingForm] = useState(false)
-
-  const testimonials = [
-    {
-      name: "Carlos Silva",
-      company: "TechServ Solutions",
-      text: "A Fluintech revolucionou nosso atendimento. Reduzimos 70% do tempo de resposta e aumentamos a satisfação dos clientes.",
-      rating: 5,
-    },
-    {
-      name: "Ana Costa",
-      company: "Manutenção Express",
-      text: "Os agendamentos inteligentes otimizaram nossa operação. Agora conseguimos atender 3x mais clientes com a mesma equipe.",
-      rating: 5,
-    },
-    {
-      name: "Roberto Oliveira",
-      company: "ServicePro",
-      text: "A automação com IA da Fluintech nos permitiu focar no que realmente importa: entregar um serviço excepcional.",
-      rating: 5,
-    },
-  ]
-
-  const features = [
-    {
-      icon: Calendar,
-      title: "Agendamentos Inteligentes",
-      description: "IA que otimiza horários e recursos automaticamente, reduzindo conflitos e maximizando eficiência.",
-    },
-    {
-      icon: Bot,
-      title: "Atendimento Automatizado",
-      description: "Chatbots inteligentes que resolvem 80% das dúvidas dos clientes 24/7, com linguagem natural.",
-    },
-    {
-      icon: Zap,
-      title: "Fluxos com IA",
-      description: "Automação completa de processos com inteligência artificial adaptativa e aprendizado contínuo.",
-    },
-    {
-      icon: BarChart3,
-      title: "Relatórios Inteligentes",
-      description: "Analytics avançados com insights acionáveis para otimizar sua operação continuamente.",
-    },
-  ]
+  const [isDemoOpen, setIsDemoOpen] = useState(false)
+  const [animatedStats, setAnimatedStats] = useState({ reduction: 0, availability: 0, efficiency: 0 })
+  const [floatingDots, setFloatingDots] = useState<Array<{left: string, delay: string, duration: string}>>([])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    return () => clearInterval(interval)
+    // Generate floating dots only on client side to avoid hydration mismatch
+    const dots = [...Array(15)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 8}s`,
+      duration: `${6 + Math.random() * 4}s`
+    }))
+    setFloatingDots(dots)
   }, [])
 
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-  }
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimatedStats({ reduction: 70, availability: 24, efficiency: 3 })
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
-    <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        {/* Animated Background */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=0 0 60 60 xmlns=http://www.w3.org/2000/svg%3E%3Cg fill=none fillRule=evenodd%3E%3Cg fill=%239C92AC fillOpacity=0.1%3E%3Ccircle cx=30 cy=30 r=1/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] animate-pulse"></div>
-          <div className="neural-network"></div>
-        </div>
+    <div className="min-h-screen relative bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 scrollbar scrollbar-w-1 scrollbar-track-purple-900/5 scrollbar-thumb-purple-400/20 hover:scrollbar-thumb-purple-400/40 scrollbar-track-rounded scrollbar-thumb-rounded">
+      <style jsx global>{`
+        ::-webkit-scrollbar {
+          width: 0px;
+        }
+        ::-webkit-scrollbar-track {
+          background: rgba(139, 92, 246, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+          background: rgba(139, 92, 246, 0.2);
+          border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: rgba(139, 92, 246, 0.4);
+        }
+        
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeInUp {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .floating-elements {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        
+        .floating-dot {
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          background: rgba(139, 92, 246, 0.3);
+          border-radius: 50%;
+          animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.8; }
+          90% { opacity: 0.8; }
+          100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
+      `}</style>
 
-        {/* Header */}
-        <motion.header
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-50 bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0"
-        >
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-                className="flex items-center space-x-2"
-              >
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-2xl font-bold text-white">Fluintech</span>
-              </motion.div>
+      <div className="floating-elements">
+        {floatingDots.map((dot, i) => (
+          <div
+            key={i}
+            className="floating-dot"
+            style={{
+              left: dot.left,
+              animationDelay: dot.delay,
+              animationDuration: dot.duration,
+            }}
+          />
+        ))}
+      </div>
 
-              <nav className="hidden md:flex items-center space-x-8">
-                {["Início", "Soluções", "Sobre", "Contato"].map((item, index) => (
-                  <motion.a
-                    key={item}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                    href={`#${item.toLowerCase()}`}
-                    className="text-gray-300 hover:text-purple-400 transition-colors"
-                  >
-                    {item}
-                  </motion.a>
-                ))}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
-                  <Button
-                    onClick={() => setShowOnboardingForm(true)}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
-                  >
-                    Comece Agora
-                  </Button>
-                </motion.div>
-              </nav>
-
-              <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                {isMenuOpen ? <X /> : <Menu />}
-              </button>
+      <header className="fixed top-0 left-0 right-0 z-50 bg-purple-900/80 backdrop-blur-md border-b border-purple-700/30 px-4 py-4 lg:px-8 transition-all duration-300">
+        <nav className="flex items-center justify-between max-w-7xl mx-auto">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg flex items-center justify-center transition-transform hover:scale-110">
+              <div className="w-4 h-4 bg-white rounded-sm opacity-90"></div>
             </div>
-
-            {/* Mobile Menu */}
-            <motion.div
-              initial={false}
-              animate={{ height: isMenuOpen ? "auto" : 0, opacity: isMenuOpen ? 1 : 0 }}
-              className="md:hidden overflow-hidden"
-            >
-              <div className="mt-4 pb-4 border-t border-purple-500/20">
-                <nav className="flex flex-col space-y-4 mt-4">
-                  {["Início", "Soluções", "Sobre", "Contato"].map((item) => (
-                    <a
-                      key={item}
-                      href={`#${item.toLowerCase()}`}
-                      className="text-gray-300 hover:text-purple-400 transition-colors"
-                    >
-                      {item}
-                    </a>
-                  ))}
-                  <Button
-                    onClick={() => setShowOnboardingForm(true)}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-full w-fit"
-                  >
-                    Comece Agora
-                  </Button>
-                </nav>
-              </div>
-            </motion.div>
+            <span className="text-xl font-bold text-white">Fluintech</span>
           </div>
-        </motion.header>
 
-        {/* Hero Section */}
-        <section id="início" className="relative min-h-screen flex items-center justify-center px-4">
-          <div className="container mx-auto text-center relative z-10">
-            <FadeInView delay={0.2}>
-              <Badge className="mb-6 bg-purple-500/20 text-purple-300 border-purple-500/30 px-4 py-2 text-sm animate-pulse">
-                🚀 Tecnologia de IA de Última Geração
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#inicio" className="text-white/90 hover:text-white transition-all duration-300 hover:scale-105">
+              Início
+            </a>
+            <a href="#solucoes" className="text-white/90 hover:text-white transition-all duration-300 hover:scale-105">
+              Soluções
+            </a>
+            <a href="#sobre" className="text-white/90 hover:text-white transition-all duration-300 hover:scale-105">
+              Sobre
+            </a>
+            <a href="/blog" className="text-white/90 hover:text-white transition-all duration-300 hover:scale-105">
+              Blog
+            </a>
+            <a href="#contato" className="text-white/90 hover:text-white transition-all duration-300 hover:scale-105">
+              Contato
+            </a>
+            <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 cursor-pointer">
+              Comece Agora
+            </Button>
+          </div>
+
+          <button
+            className="md:hidden text-white transition-transform hover:scale-110"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </nav>
+
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-purple-900/95 backdrop-blur-sm border-t border-purple-700 animate-in slide-in-from-top duration-300">
+            <div className="px-4 py-6 space-y-4">
+              <a
+                href="#inicio"
+                className="block text-white/90 hover:text-white transition-all duration-300 hover:translate-x-2"
+              >
+                Início
+              </a>
+              <a
+                href="#solucoes"
+                className="block text-white/90 hover:text-white transition-all duration-300 hover:translate-x-2"
+              >
+                Soluções
+              </a>
+              <a
+                href="#sobre"
+                className="block text-white/90 hover:text-white transition-all duration-300 hover:translate-x-2"
+              >
+                Sobre
+              </a>
+              <a
+                href="/blog"
+                className="block text-white/90 hover:text-white transition-all duration-300 hover:translate-x-2"
+              >
+                Blog
+              </a>
+              <a
+                href="#contato"
+                className="block text-white/90 hover:text-white transition-all duration-300 hover:translate-x-2"
+              >
+                Contato
+              </a>
+              <Button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 transition-all duration-300 hover:scale-105 cursor-pointer">
+                Comece Agora
+              </Button>
+            </div>
+          </div>
+        )}
+      </header>
+
+      <section id="inicio" className="px-4 py-16 lg:px-8 lg:py-24 pt-32 fade-in-section">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left">
+              <Badge className="mb-6 bg-purple-700/50 text-purple-200 border-purple-600 hover:bg-purple-700/60 transition-all duration-300 hover:scale-105">
+                <Zap className="w-4 h-4 mr-2" />
+                Tecnologia de IA de Última Geração
               </Badge>
-            </FadeInView>
 
-            <FadeInView delay={0.4}>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 text-balance">
                 Automatize seu atendimento com{" "}
-                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
                   inteligência artificial
                 </span>
               </h1>
-            </FadeInView>
 
-            <FadeInView delay={0.6}>
-              <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
+              <p className="text-xl md:text-2xl text-purple-200 mb-8 text-pretty">
                 Transforme sua operação com agentes inteligentes que atendem clientes 24/7 e otimizam agendamentos
                 automaticamente.
               </p>
-            </FadeInView>
 
-            <FadeInView delay={0.8}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-8">
                 <Button
                   size="lg"
-                  onClick={() => setShowOnboardingForm(true)}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
+                  className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white border-0 text-lg px-8 py-4 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/25 cursor-pointer"
                 >
                   Comece sua automação hoje
                   <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-
                 <Button
-                  variant="outline"
                   size="lg"
-                  className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 bg-transparent"
+                  variant="outline"
+                  className="border-purple-400 text-purple-200 hover:bg-purple-800/50 hover:border-purple-300 text-lg px-8 py-4 bg-transparent transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/20 cursor-pointer"
+                  onClick={() => setIsDemoOpen(true)}
                 >
                   <Play className="mr-2 w-5 h-5" />
                   Ver demonstração
                 </Button>
               </div>
-            </FadeInView>
-
-            {/* Stats */}
-            <FadeInView delay={1.0}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-                {[
-                  { value: "70%", label: "Redução no tempo de resposta", color: "text-purple-400" },
-                  { value: "24/7", label: "Atendimento automatizado", color: "text-blue-400" },
-                  { value: "3x", label: "Mais eficiência operacional", color: "text-purple-400" },
-                ].map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 + index * 0.2 }}
-                    className="text-center"
-                  >
-                    <div className={`text-3xl font-bold ${stat.color} mb-2`}>{stat.value}</div>
-                    <div className="text-gray-400">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-            </FadeInView>
-          </div>
-        </section>
-
-        {/* Features Section */}
-        <section id="soluções" className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  Soluções que{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    transformam
-                  </span>
-                </h2>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                  Descubra como nossa inteligência artificial pode revolucionar sua operação
-                </p>
-              </div>
-            </FadeInView>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {features.map((feature, index) => (
-                <FadeInView key={index} delay={index * 0.2}>
-                  <motion.div whileHover={{ scale: 1.05, y: -10 }} transition={{ type: "spring", stiffness: 300 }}>
-                    <Card className="bg-white/5 backdrop-blur-md border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full group">
-                      <CardContent className="p-6 text-center">
-                        <motion.div
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.6 }}
-                          className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4"
-                        >
-                          <feature.icon className="w-8 h-8 text-white" />
-                        </motion.div>
-                        <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                        <p className="text-gray-300 leading-relaxed">{feature.description}</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </FadeInView>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Automation Flow Demo */}
-        <section className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  Veja a{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    automação
-                  </span>{" "}
-                  em ação
-                </h2>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-                  Fluxo inteligente de atendimento e agendamento funcionando 24/7
-                </p>
-              </div>
-            </FadeInView>
-
-            <FadeInView delay={0.3}>
-              <AutomationFlow />
-            </FadeInView>
-
-            <FadeInView delay={0.6}>
-              <div className="text-center mt-8">
-                <Button
-                  size="lg"
-                  onClick={() => setShowOnboardingForm(true)}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105"
-                >
-                  Solicite uma demonstração personalizada
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </div>
-            </FadeInView>
-          </div>
-        </section>
-
-        {/* Testimonials */}
-        <section className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  O que nossos{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    clientes
-                  </span>{" "}
-                  dizem
-                </h2>
-              </div>
-            </FadeInView>
-
-            <FadeInView delay={0.3}>
-              <div className="max-w-4xl mx-auto relative">
-                <motion.div
-                  key={currentTestimonial}
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card className="bg-white/5 backdrop-blur-md border-purple-500/20">
-                    <CardContent className="p-8 text-center">
-                      <div className="flex justify-center mb-4">
-                        {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                        ))}
-                      </div>
-                      <blockquote className="text-xl md:text-2xl text-gray-300 mb-6 italic leading-relaxed">
-                        "{testimonials[currentTestimonial].text}"
-                      </blockquote>
-                      <div className="text-white font-semibold text-lg">{testimonials[currentTestimonial].name}</div>
-                      <div className="text-purple-400">{testimonials[currentTestimonial].company}</div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                <button
-                  onClick={prevTestimonial}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 rounded-full transition-all duration-300"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-
-                <button
-                  onClick={nextTestimonial}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 rounded-full transition-all duration-300"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-
-                <div className="flex justify-center mt-6 space-x-2">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentTestimonial(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        index === currentTestimonial ? "bg-purple-500" : "bg-white/30"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </FadeInView>
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section id="sobre" className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <FadeInView direction="left">
-                <div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                    Sobre a{" "}
-                    <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                      Fluintech
-                    </span>
-                  </h2>
-                  <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                    Somos uma startup brasileira especializada em automação inteligente para atendimento ao cliente e
-                    agendamento de serviços. Nossa missão é democratizar o acesso à inteligência artificial para
-                    empresas de pequeno porte e profissionais autônomos.
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    {[
-                      { icon: Target, title: "Missão", desc: "Democratizar IA para empresas" },
-                      { icon: Lightbulb, title: "Visão", desc: "Liderar automação inteligente" },
-                      { icon: Users, title: "Valores", desc: "Inovação e excelência" },
-                    ].map((item, index) => (
-                      <FadeInView key={index} delay={index * 0.2}>
-                        <div className="text-center">
-                          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <item.icon className="w-8 h-8 text-white" />
-                          </div>
-                          <h3 className="text-white font-semibold mb-2">{item.title}</h3>
-                          <p className="text-gray-400 text-sm">{item.desc}</p>
-                        </div>
-                      </FadeInView>
-                    ))}
-                  </div>
-                </div>
-              </FadeInView>
-
-              <FadeInView direction="right" delay={0.3}>
-                <Card className="bg-white/5 backdrop-blur-md border-purple-500/20">
-                  <CardContent className="p-8">
-                    <div className="space-y-6">
-                      {[
-                        { year: "2023", title: "Fundação", desc: "Início da jornada em IA" },
-                        { number: "50+", title: "Clientes", desc: "Empresas automatizadas" },
-                        { number: "24/7", title: "Suporte", desc: "Atendimento contínuo" },
-                      ].map((item, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: 50 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.2 }}
-                          className="flex items-center space-x-4"
-                        >
-                          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">{item.year || item.number}</span>
-                          </div>
-                          <div>
-                            <h4 className="text-white font-semibold">{item.title}</h4>
-                            <p className="text-gray-400">{item.desc}</p>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </FadeInView>
-            </div>
-          </div>
-        </section>
-
-        {/* Onboarding Form Section */}
-        <section id="contato" className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  Vamos automatizar seu{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    atendimento?
-                  </span>
-                </h2>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                  Responda algumas perguntas e descubra como podemos transformar sua operação
-                </p>
-              </div>
-            </FadeInView>
-
-            <FadeInView delay={0.3}>
-              <div className="text-center">
-                <Button
-                  size="lg"
-                  onClick={() => setShowOnboardingForm(true)}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-12 py-6 rounded-full text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
-                >
-                  Iniciar avaliação gratuita
-                  <ArrowRight className="ml-3 w-6 h-6" />
-                </Button>
-                <p className="text-gray-400 mt-4">⏱️ Leva apenas 2 minutos • 🔒 Seus dados estão protegidos</p>
-              </div>
-            </FadeInView>
-
-            {/* Contact Info Cards */}
-            <FadeInView delay={0.6}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
-                {[
-                  { icon: MapPin, title: "Endereço", info: "Maringá, PR - Brasil" },
-                  { icon: Mail, title: "E-mail", info: "contato@fluintech.com.br" },
-                  { icon: Phone, title: "Telefone", info: "(44) 99864-4440" },
-                ].map((contact, index) => (
-                  <motion.div key={index} whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
-                    <Card className="bg-white/5 backdrop-blur-md border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
-                      <CardContent className="p-6 text-center">
-                        <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-                          <contact.icon className="w-6 h-6 text-white" />
-                        </div>
-                        <h4 className="text-white font-semibold mb-2">{contact.title}</h4>
-                        <p className="text-gray-400">{contact.info}</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
-            </FadeInView>
-
-            {/* WhatsApp CTA */}
-            <FadeInView delay={0.9}>
-              <div className="text-center mt-8">
-                <motion.div
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                >
-                <WhatsAppButton />
-                </motion.div>
-              </div>
-            </FadeInView>
-
-            {/* Onboarding Modal */}
-            <OnboardingModal open={showOnboardingForm} onOpenChange={setShowOnboardingForm} />
-          </div>
-        </section>
-
-        {/* Footer */}
-        <footer className="bg-black/40 backdrop-blur-md border-t border-purple-500/20 py-12 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-                <div>
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
-                    className="flex items-center space-x-2 mb-4"
-                  >
-                    <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                      <Bot className="w-5 h-5 text-white" />
-                    </div>
-                    <span className="text-2xl font-bold text-white">Fluintech</span>
-                  </motion.div>
-                  <p className="text-gray-400 mb-4">Automatização inteligente para o futuro dos negócios.</p>
-                </div>
-
-                <div>
-                  <h4 className="text-white font-semibold mb-4">Soluções</h4>
-                  <ul className="space-y-2 text-gray-400">
-                    {["Agendamentos IA", "Chatbots", "Automação", "Analytics"].map((item, index) => (
-                      <motion.li
-                        key={item}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <a href="#" className="hover:text-purple-400 transition-colors">
-                          {item}
-                        </a>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="text-white font-semibold mb-4">Empresa</h4>
-                  <ul className="space-y-2 text-gray-400">
-                    {[
-                      { text: "Sobre nós", href: "#sobre" },
-                      { text: "Blog", href: "#" },
-                      { text: "Carreiras", href: "#" },
-                      { text: "Contato", href: "#contato" },
-                    ].map((item, index) => (
-                      <motion.li
-                        key={item.text}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                      >
-                        <a href={item.href} className="hover:text-purple-400 transition-colors">
-                          {item.text}
-                        </a>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="text-white font-semibold mb-4">Newsletter</h4>
-                  <p className="text-gray-400 mb-4">Receba novidades sobre IA</p>
-                  <div className="flex space-x-2">
-                    <Input
-                      placeholder="Seu e-mail"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="bg-white/10 border-purple-500/30 text-white placeholder-gray-400"
-                    />
-                    <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-4">
-                      <ArrowRight className="w-4 h-4" />
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </FadeInView>
-
-            <div className="border-t border-purple-500/20 pt-8 text-center">
-              © {new Date().getFullYear()} Fluintech. Todos os direitos reservados.
             </div>
 
+            <div className="relative">
+              <WhatsAppChat />
+            </div>
           </div>
-        </footer>
 
-        <style jsx>{`
-          .neural-network {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-              radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
-            animation: float 20s ease-in-out infinite;
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto mt-16">
+            <div className="text-center transition-all duration-300 hover:scale-105">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">{animatedStats.reduction}%</div>
+              <p className="text-purple-300">Redução no tempo de resposta</p>
+            </div>
+            <div className="text-center transition-all duration-300 hover:scale-105">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">{animatedStats.availability}/7</div>
+              <p className="text-purple-300">Atendimento automatizado</p>
+            </div>
+            <div className="text-center transition-all duration-300 hover:scale-105">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">{animatedStats.efficiency}x</div>
+              <p className="text-purple-300">Mais eficiência operacional</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <SolutionsGrid />
+
+      <WorkflowSection />
+
+      <section className="px-4 py-16 lg:px-8 lg:py-24 bg-black/20 fade-in-section">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="flex justify-center mb-6">
+            {[...Array(5)].map((_, i) => (
+              <Star
+                key={i}
+                className="w-6 h-6 text-yellow-400 fill-current transition-all duration-300 hover:scale-125"
+              />
+            ))}
+          </div>
+          <blockquote className="text-2xl md:text-3xl font-medium text-white mb-8 text-balance">
+            "A Fluintech revolucionou nosso atendimento. Reduzimos 70% do tempo de resposta e aumentamos a satisfação
+            dos clientes."
+          </blockquote>
+          <cite className="text-purple-300 text-lg">— Carlos Silva, TechServ Solutions</cite>
+        </div>
+      </section>
+
+      <section id="sobre" className="px-4 py-16 lg:px-8 lg:py-24 fade-in-section">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">Sobre a Fluintech</h2>
+              <p className="text-xl text-purple-100 mb-6 leading-relaxed">
+                Somos uma startup dedicada a democratizar o acesso à inteligência artificial para empresas de todos os
+                tamanhos. Nossa missão é transformar o atendimento ao cliente através de soluções inovadoras e
+                acessíveis.
+              </p>
+              <p className="text-lg text-purple-200 mb-8 leading-relaxed">
+                Com foco em automação inteligente, ajudamos empresas a otimizar seus processos, reduzir custos
+                operacionais e melhorar a experiência do cliente através de tecnologia de ponta.
+              </p>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center transition-all duration-300 hover:scale-105">
+                  <div className="text-3xl font-bold text-white mb-2">500+</div>
+                  <p className="text-purple-200">Clientes Atendidos</p>
+                </div>
+                <div className="text-center transition-all duration-300 hover:scale-105">
+                  <div className="text-3xl font-bold text-white mb-2">24/7</div>
+                  <p className="text-purple-200">Suporte Disponível</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="w-full h-96 bg-gradient-to-br from-purple-600/30 to-pink-600/30 rounded-2xl border border-purple-500/30 flex items-center justify-center transition-all duration-300 hover:border-purple-400/50 hover:shadow-xl">
+                <div className="text-center">
+                  <Zap className="w-24 h-24 text-purple-400 mx-auto mb-4 transition-all duration-300 hover:scale-110" />
+                  <p className="text-purple-100 text-lg">Tecnologia Inovadora</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
+
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button
+          size="lg"
+          className="bg-[#25d366] hover:bg-[#20c55a] text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group hover:shadow-green-500/25 cursor-pointer"
+          onClick={() =>
+            window.open(
+              "https://wa.me/5544999999999?text=Olá! Gostaria de saber mais sobre a automação com IA.",
+              "_blank",
+            )
           }
-          
-          @keyframes float {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            33% { transform: translateY(-20px) rotate(1deg); }
-            66% { transform: translateY(10px) rotate(-1deg); }
-          }
-        `}</style>
+        >
+          <svg className="w-8 h-8 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516" />
+          </svg>
+        </Button>
       </div>
-    </PageTransition>
+
+      <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
+    </div>
   )
 }

@@ -1,100 +1,63 @@
 import type React from "react"
+import type { Metadata } from "next"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
+import { Suspense } from "react"
+import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"] })
-
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-}
-
 export const metadata: Metadata = {
-  title: "Fluintech - Automação Inteligente com IA | Atendimento e Agendamentos",
+  title: "Fluintech - Automatize seu atendimento com IA",
   description:
-    "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes. Reduza 70% do tempo de resposta.",
-  keywords:
-    "automação, inteligência artificial, chatbot, agendamento inteligente, atendimento automatizado, IA, Brasil",
+    "Transforme sua operação com agentes inteligentes que atendem clientes 24/7 e otimizam agendamentos automaticamente.",
+  generator: "v0.app",
+  keywords: "inteligência artificial, automação, chatbots, WhatsApp Business, atendimento automatizado, IA empresarial",
   authors: [{ name: "Fluintech" }],
   creator: "Fluintech",
   publisher: "Fluintech",
   robots: "index, follow",
   openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    url: "https://www.fluintech.com.br",
+    title: "Fluintech - Automatize seu atendimento com IA",
+    description: "Transforme sua operação com agentes inteligentes que atendem clientes 24/7",
+    url: "https://fluintech.com.br",
     siteName: "Fluintech",
-    title: "Fluintech - Automação Inteligente com IA",
-    description:
-      "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Fluintech - Automação Inteligente",
+        alt: "Fluintech - Automação com IA",
       },
     ],
+    locale: "pt_BR",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Fluintech - Automação Inteligente com IA",
-    description:
-      "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
-    images: ["/og-image.png"],
-  }
+    title: "Fluintech - Automatize seu atendimento com IA",
+    description: "Transforme sua operação com agentes inteligentes que atendem clientes 24/7",
+    images: ["/og-image.jpg"],
+    creator: "@fluintech",
+  },
+  alternates: {
+    canonical: "https://fluintech.com.br",
+  },
 }
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode
-}) {
+}>) {
   return (
     <html lang="pt-BR">
-      <head>
-        <link rel="canonical" href="https://www.fluintech.com.br" />
-        <meta name="geo.region" content="BR" />
-        <meta name="geo.placename" content="Paraná" />
-        <meta name="geo.position" content="-23.419018564247832;-51.93836327766127" />
-        <meta name="ICBM" content="-23.419018564247832, -51.93836327766127" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Fluintech",
-              url: "https://www.fluintech.com.br",
-              logo: "https://www.fluintech.com.br/logo.png",
-              description:
-                "Startup brasileira especializada em automação inteligente para atendimento ao cliente e agendamento de serviços com IA.",
-              address: {
-                "@type": "PostalAddress",
-                addressCountry: "BR",
-                addressRegion: "PR",
-                addressLocality: "Paraná",
-              },
-              contactPoint: {
-                "@type": "ContactPoint",
-                telephone: "+55-44-99864-4440",
-                contactType: "customer service",
-                availableLanguage: "Portuguese",
-              },
-              sameAs: ["https://linkedin.com/company/fluintech", "https://instagram.com/fluintech"],
-            }),
-          }}
-        />
-      </head>
-      <body className={inter.className}>
-        {children}
+      <body
+        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 min-h-screen`}
+      >
+        <Suspense fallback={null}>{children}</Suspense>
+        <Toaster />
         <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   )
