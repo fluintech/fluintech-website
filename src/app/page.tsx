@@ -311,11 +311,11 @@ export default function FluintechLanding() {
 
       <div className="fixed bottom-6 right-6 z-50">
         <Button
-          size="lg"
+          size="icon"
           className="bg-[#25d366] hover:bg-[#20c55a] text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group hover:shadow-green-500/25 cursor-pointer"
           onClick={() =>
             window.open(
-              "https://wa.me/5544999999999?text=Olá! Gostaria de saber mais sobre a automação com IA.",
+              "https://wa.me/554431010224?text=Olá! Gostaria de saber mais sobre a automação com IA.",
               "_blank",
             )
           }
