@@ -10,8 +10,10 @@ export interface BlogPost {
   tags: string[]
   featured?: boolean
   slug: string
+  author?: string
   views: number
   createdAt: string
+  updatedAt?: string
 }
 
 const viewCounts = new Map<string, number>()

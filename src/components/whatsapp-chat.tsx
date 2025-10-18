@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Bot, Mic, Check, CheckCheck, MoreVertical, Phone, Video, Play } from "lucide-react"
+import { Mic, Check, CheckCheck, MoreVertical, Phone, Video, Play } from "lucide-react"
 
 interface Message {
   type: "user" | "bot"
@@ -14,7 +14,7 @@ interface Message {
 
 export function WhatsAppChat() {
   const [chatMessages, setChatMessages] = useState<Message[]>([
-    { type: "user", text: "Preciso agendar uma consulta", time: "14:30", status: "read" },
+    { type: "user", text: "Oi Lia! Como você pode me ajudar?", time: "14:30", status: "read" },
   ])
   const [currentMessageIndex, setCurrentMessageIndex] = useState(0)
   const [isTyping, setIsTyping] = useState(false)
@@ -25,25 +25,39 @@ export function WhatsAppChat() {
 
   useEffect(() => {
     const messages: Message[] = [
-      { type: "user", text: "Preciso agendar uma consulta", time: "14:30", status: "read" },
+      { type: "user", text: "Oi Lia! Como você pode me ajudar?", time: "14:30", status: "read" },
       {
         type: "bot",
-        text: "Olá! Posso ajudar com o agendamento. Qual especialidade você precisa?",
+        text: "Oi! Eu sou a Lia, assistente de IA da Fluintech. Posso entender suas necessidades de automação e te recomendar exatamente qual agente você precisa para seu negócio.",
         time: "14:31",
         status: "read",
       },
-      { type: "user", text: "Cardiologia", time: "14:31", isAudio: true, duration: "0:03", status: "read" },
+      { type: "user", text: "Qual é a diferença entre seus agentes?", time: "14:32", status: "read" },
       {
         type: "bot",
-        text: "Perfeito! Tenho disponibilidade para amanhã às 15h ou quinta às 10h. Qual prefere?",
-        time: "14:32",
+        text: "Ótima pergunta! Temos agentes especializados: SDR que qualifica leads, Agendador que marca consultas, Atendente que responde 24/7, e Follow-up que mantém clientes aquecidos.",
+        time: "14:33",
         status: "read",
       },
-      { type: "user", text: "Amanhã às 15h", time: "14:32", status: "read" },
+      { type: "user", text: "Tem como você me explicar melhor?", time: "14:34", isAudio: true, duration: "0:05", status: "read" },
       {
         type: "bot",
-        text: "✅ Agendado! Dr. Silva, amanhã 15h. Confirmação enviada por SMS.",
-        time: "14:33",
+        text: "Claro! Posso explicar em áudio também. Resumindo: cada agente faz um trabalho repetitivo que normalmente sua equipe faria manualmente. Eles trabalham 24/7 sem cansaço.",
+        time: "14:35",
+        status: "read",
+      },
+      { type: "user", text: "Qual seria melhor para minha clínica?", time: "14:35", status: "read" },
+      {
+        type: "bot",
+        text: "Para uma clínica, geralmente recomendo: Agendador (para marcar consultas) + Atendente (para responder dúvidas sobre horários) + Follow-up (para lembretes pré-consulta). Faz sentido?",
+        time: "14:36",
+        status: "read",
+      },
+      { type: "user", text: "Excelente! Quero conhecer melhor", time: "14:37", status: "read" },
+      {
+        type: "bot",
+        text: "✅ Perfeito! Vou encaminhar você para um especialista da Fluintech que vai te mostrar tudo funcionando. Ele vai te contactar em breve!",
+        time: "14:38",
         status: "delivered",
       },
     ]
@@ -65,7 +79,6 @@ export function WhatsAppChat() {
                 setChatMessages(messages.slice(0, prev + 2))
               }, 2000)
             } else {
-              // Simulate typing the actual message
               const messageText = nextMessage.text
               let currentChar = 0
 
@@ -81,7 +94,7 @@ export function WhatsAppChat() {
                     setChatMessages(messages.slice(0, prev + 2))
                   }, 500)
                 }
-              }, 100)
+              }, 80)
             }
           } else {
             setHeaderStatus("digitando...")
@@ -91,12 +104,11 @@ export function WhatsAppChat() {
               setIsTyping(false)
               setHeaderStatus("online")
               setChatMessages(messages.slice(0, prev + 2))
-            }, 2500)
+            }, 3000)
           }
 
           return prev + 1
         } else {
-          // Reset animation
           setChatMessages([messages[0]])
           setHeaderStatus("online")
           setInputText("")
@@ -104,7 +116,7 @@ export function WhatsAppChat() {
           return 0
         }
       })
-    }, 5000)
+    }, 5500)
 
     return () => clearInterval(interval)
   }, [])
@@ -114,11 +126,11 @@ export function WhatsAppChat() {
       {/* WhatsApp Header */}
       <div className="bg-[#2a2f32] p-4 flex items-center justify-between border-b border-white/5">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center overflow-hidden shadow-lg">
-            <Bot className="w-6 h-6 text-white" />
+          <div className="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden shadow-lg border-2 border-emerald-400">
+            <img src="/lia-avatar.png" alt="Lia" className="w-full h-full object-cover" />
           </div>
           <div className="flex-1">
-            <h3 className="text-white font-medium text-sm">Assistente IA - Fluintech</h3>
+            <h3 className="text-white font-medium text-sm">Lia - Assistente Fluintech</h3>
             <div className="text-xs flex items-center">
               <div
                 className={`w-2 h-2 rounded-full mr-2 ${headerStatus === "online" ? "bg-green-400" : "bg-orange-400"}`}
@@ -152,17 +164,14 @@ export function WhatsAppChat() {
             >
               {message.isAudio ? (
                 <div className="flex items-center space-x-3 min-w-[200px] py-1">
-                  {/* Profile picture for audio messages */}
                   <div className="w-8 h-8 bg-gray-400 rounded-full flex items-center justify-center overflow-hidden shrink-0">
-                    <img src="/user-profile-illustration.png" alt="User" className="w-full h-full object-cover" />
+                    <span className="text-sm font-bold text-gray-900">👤</span>
                   </div>
 
-                  {/* Play button */}
                   <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center shadow-sm cursor-pointer hover:bg-white/30 transition-colors">
                     <Play className="w-4 h-4 text-white ml-0.5" fill="currentColor" />
                   </div>
 
-                  {/* Waveform visualization */}
                   <div className="flex items-center space-x-0.5 flex-1">
                     {[3, 6, 9, 4, 7, 11, 6, 3, 8, 10, 5, 12, 4, 6, 9, 3, 11, 5, 8, 4].map((height, i) => (
                       <div
@@ -176,7 +185,6 @@ export function WhatsAppChat() {
                     ))}
                   </div>
 
-                  {/* Duration */}
                   <span className="text-xs text-white/70 font-mono">{message.duration}</span>
                 </div>
               ) : (
