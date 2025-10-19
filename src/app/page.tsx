@@ -268,7 +268,7 @@ export default function FluintechLanding() {
                   onClick={() => setIsDemoOpen(true)}
                   className="bg-gradient-to-br from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 text-base px-6 py-4 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 cursor-pointer font-semibold absolute top-6 right-6 z-20"
                 >
-                  Conversar
+                  Ver mais agentes
                 </Button>
                 <div className="relative z-10">
                   <WhatsAppChat />
