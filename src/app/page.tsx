@@ -146,6 +146,9 @@ export default function FluintechLanding() {
             <a href="#lia" className="text-white/90 hover:text-white transition-colors duration-300">
               Sobre a Lia
             </a>
+            <a href="/lista-espera" className="text-white/90 hover:text-white transition-colors duration-300">
+              Lista de espera
+            </a>
             <a href="/blog" className="text-white/90 hover:text-white transition-colors duration-300">
               Blog
             </a>

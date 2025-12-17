@@ -9,31 +9,25 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: {
-    default: "Agentes de IA no WhatsApp | Fluintech",
-    template: "%s | Fluintech - IA no WhatsApp"
+    default: "Lista de Espera - Aula Gratuita de Automações | Fluintech",
+    template: "%s | Fluintech",
   },
-  description: "Converse com a Lia e crie agentes de IA personalizados para seu WhatsApp. Qualifique leads, agende consultas, atenda 24/7 e automatize vendas. Reduza custos em até 80%.",
+  description:
+    "Entre na lista de espera para a aula gratuita sobre n8n, Evolution API, OpenAI e automações inteligentes. Aprenda a criar automações escaláveis do zero.",
   generator: "Next.js",
   applicationName: "Fluintech",
   keywords: [
-    "agentes IA WhatsApp",
-    "Lia assistente IA",
-    "qualificação de leads WhatsApp",
-    "SDR automático WhatsApp",
-    "chatbot inteligente WhatsApp",
-    "automação vendas WhatsApp",
-    "agendamento automático WhatsApp",
-    "atendimento 24/7 WhatsApp",
-    "follow-up automático WhatsApp",
-    "bot de IA WhatsApp",
-    "assistente virtual WhatsApp",
-    "automação WhatsApp Business",
-    "lead qualification automática",
-    "conversas com IA no WhatsApp",
-    "ferramenta IA vendas",
-    "chatbot IA conversacional",
-    "inteligência artificial Brasil",
-    "automação negócios"
+    "n8n",
+    "automação",
+    "IA",
+    "WhatsApp",
+    "Evolution API",
+    "OpenAI",
+    "VPS",
+    "self-hosted",
+    "automações avançadas",
+    "curso n8n",
+    "aula gratuita automação",
   ],
   authors: [{ name: "Fluintech", url: "https://www.fluintech.com.br" }],
   creator: "Fluintech",
@@ -45,10 +39,10 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://www.fluintech.com.br"),
   alternates: {
-    canonical: "/",
+    canonical: "/lista-espera",
     languages: {
-      'pt-BR': '/',
-    }
+      "pt-BR": "/lista-espera",
+    },
   },
   robots: {
     index: true,
@@ -66,16 +60,16 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-    url: "https://www.fluintech.com.br",
+    url: "https://www.fluintech.com.br/lista-espera",
     siteName: "Fluintech",
-    title: "Agentes de IA no WhatsApp",
-    description: "Agentes de IA personalizados que trabalham no seu WhatsApp. Qualifique leads, agende consultas, atenda clientes 24/7. Fale com a Lia agora.",
+    title: "Lista de Espera - Aula Gratuita de Automações Avançadas",
+    description: "Aprenda a criar automações escaláveis com n8n, WhatsApp e IA. Entre na lista de espera.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Fluintech - Agentes de IA no WhatsApp com a Lia",
+        alt: "Fluintech - Aula Gratuita de Automações",
         type: "image/jpeg",
       },
     ],
@@ -84,61 +78,39 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@fluintech",
     creator: "@fluintech",
-    title: "Agentes de IA no WhatsApp",
-    description: "Crie agentes de IA para seu WhatsApp. Qualifique leads, agende consultas, automatize vendas com a Lia.",
+    title: "Lista de Espera - Aula Gratuita de Automações",
+    description: "Aprenda n8n, Evolution API, OpenAI e automações escaláveis. Inscreva-se na lista de espera.",
     images: {
       url: "/og-image.jpg",
-      alt: "Fluintech - Agentes de IA no WhatsApp",
+      alt: "Fluintech - Aula Gratuita",
     },
-  },
-  verification: {
-    google: "seu-codigo-google-search-console",
   },
   category: "Technology",
 }
 
 const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'SoftwareApplication',
-  name: 'Fluintech - Converse com a Lia',
-  description: 'Agentes de IA personalizados que trabalham no seu WhatsApp. Qualifique leads, agende consultas e automatize vendas.',
-  url: 'https://www.fluintech.com.br',
-  applicationCategory: 'BusinessApplication',
-  operatingSystem: 'Web',
-  offers: {
-    '@type': 'Offer',
-    availability: 'https://schema.org/InStock',
-    price: '0',
-    priceCurrency: 'BRL'
-  },
-  provider: {
-    '@type': 'Organization',
-    name: 'Fluintech',
-    url: 'https://www.fluintech.com.br',
-    logo: 'https://www.fluintech.com.br/logo.png',
-    image: 'https://www.fluintech.com.br/lia-avatar.png',
+  "@context": "https://schema.org",
+  "@type": "EducationalEvent",
+  name: "Aula Gratuita de Automações Avançadas - Fluintech",
+  description: "Aprenda a criar automações escaláveis com n8n, Evolution API, OpenAI e WhatsApp",
+  eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+  eventStatus: "https://schema.org/EventScheduled",
+  organizer: {
+    "@type": "Organization",
+    name: "Fluintech",
+    url: "https://www.fluintech.com.br",
     sameAs: [
-      'https://twitter.com/fluintech',
-      'https://www.linkedin.com/company/fluintech',
-      'https://www.instagram.com/fluintech'
+      "https://www.instagram.com/fluintech",
+      "https://www.facebook.com/profile.php?id=61578914720363",
+      "https://www.youtube.com/channel/UCX6YDzQX_M8uu8qkK4aTo1g",
     ],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'Customer Service',
-      availableLanguage: ['pt-BR']
-    }
   },
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.8',
-    ratingCount: '150'
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "BRL",
+    availability: "https://schema.org/InStock",
   },
-  features: [
-    'SDR Automático',
-    'Agendamento Inteligente',
-    'Atendimento 24/7',
-    'Follow-up Automático'
-  ]
 }
 
 export default function RootLayout({
@@ -151,27 +123,24 @@ export default function RootLayout({
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#10b981" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#7c3aed" media="(prefers-color-scheme: dark)" />
         <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
-        <meta name="msapplication-TileColor" content="#10b981" />
+        <meta name="msapplication-TileColor" content="#7c3aed" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Fluintech - Lia" />
+        <meta name="apple-mobile-web-app-title" content="Fluintech" />
         <meta name="format-detection" content="telephone=no" />
-        
+
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.json" />
-        
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </head>
       <body
         className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 min-h-screen antialiased`}

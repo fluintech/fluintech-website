@@ -75,6 +75,7 @@
 }
 
 @theme inline {
+  /* Using Geist font variables from layout */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --color-background: var(--background);
@@ -119,14 +120,13 @@
   * {
     @apply border-border outline-ring/50;
   }
-  /* Override body background with purple gradient and ensure proper text colors */
+  /* Updated to darker gradient background matching hero image tonality */
   body {
-    background: linear-gradient(135deg, #581c87 0%, #7c3aed 50%, #3730a3 100%) !important;
+    background: linear-gradient(135deg, #000000 0%, #0f0f1e 25%, #1a0a1e 50%, #0f0f1e 75%, #000000 100%) !important;
     color: white !important;
     min-height: 100vh;
   }
 
-  /* Ensure all text elements have proper contrast on purple background */
   h1,
   h2,
   h3,
@@ -137,18 +137,106 @@
   }
 
   p {
-    color: #e9d5ff !important;
+    color: #d1d5db !important;
   }
 
-  .text-purple-100 {
-    color: #f3e8ff !important;
+  /* Added discrete thin scrollbar styling without rounded edges */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
   }
 
-  .text-purple-200 {
-    color: #e9d5ff !important;
+  ::-webkit-scrollbar-track {
+    background: rgba(15, 15, 30, 0.3);
   }
 
-  .text-purple-300 {
-    color: #d8b4fe !important;
+  ::-webkit-scrollbar-thumb {
+    background: rgba(236, 72, 153, 0.4);
+    border-radius: 0;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(236, 72, 153, 0.6);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(236, 72, 153, 0.4) rgba(15, 15, 30, 0.3);
+  }
+}
+
+/* Added modern animations */
+@layer utilities {
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%,
+    100% {
+      box-shadow: 0 0 20px rgba(236, 72, 153, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(236, 72, 153, 0.5);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s ease-out forwards;
+  }
+
+  .animate-fade-in {
+    animation: fade-in 0.6s ease-out forwards;
+  }
+
+  .animate-scale-in {
+    animation: scale-in 0.5s ease-out forwards;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  .animation-delay-100 {
+    animation-delay: 100ms;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
   }
 }
