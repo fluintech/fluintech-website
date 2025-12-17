@@ -126,7 +126,7 @@ export default function ListaEsperaPage() {
                 Vagas Limitadas
               </div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-balance leading-tight text-white">
-                Domine Automações Avançadas com n8n e IA
+                Domine automações do básico ao avançado com n8n e IA
               </h1>
               <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300 text-pretty leading-relaxed">
                 Aprenda a criar automações escaláveis, integrar WhatsApp via Evolution API e aplicar IA com OpenAI em
