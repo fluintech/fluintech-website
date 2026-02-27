@@ -1,0 +1,18 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - run: pnpm install
+      - run: pnpm build
+      - run: pnpm audit --json > pnpm-audit.json || true
+      - name: Fail on high severity
+        run: |
+          cat pnpm-audit.json | jq '.advisories | to_entries[] | select(.value.severity=="high" or .value.severity=="critical")' | read && exit 1 || true
