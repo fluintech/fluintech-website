@@ -12,6 +12,10 @@ jobs:
           version: 8
       - run: pnpm install
       - run: pnpm build
+<<<<<<< HEAD
+=======
+      - run: pnpm lint
+>>>>>>> origin/main
       - run: pnpm audit --json > pnpm-audit.json || true
       - name: Fail on high severity
         run: |
