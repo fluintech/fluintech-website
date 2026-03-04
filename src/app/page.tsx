@@ -576,10 +576,8 @@ export default function FluintechLanding() {
         </Button>
       </aside>
 
-<<<<<<< HEAD
       <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
     </div>
-=======
             {/* Contact Info Cards */}
             <FadeInView delay={0.6}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
@@ -728,5 +726,8 @@ export default function FluintechLanding() {
       </div>
     </PageTransition>
 >>>>>>> 40ff3f2 (feat: update landing page)
+      <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
+    </div>
+>>>>>>> 44cfb9a (Resolve merge markers in src/app/page.tsx — prefer origin/main content)
   )
 }
