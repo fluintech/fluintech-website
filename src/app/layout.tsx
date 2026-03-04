@@ -2,10 +2,15 @@ import type React from "react"
 import { Analytics } from "@vercel/analytics/next"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata, Viewport } from "next"
-<<<<<<< HEAD
 import { Inter } from "next/font/google"
-=======
 import { Inter } from "next/font/google"
+import type { Metadata } from "next"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
+import { Analytics } from "@vercel/analytics/next"
+import { Suspense } from "react"
+import { Toaster } from "@/components/ui/toaster"
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -31,6 +36,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "pt_BR",
     url: "https://www.fluintech.com.br",
+    url: "https://www.fluintech.com.br/lista-espera",
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
     siteName: "Fluintech",
     title: "Fluintech - Automação Inteligente com IA",
     description:
@@ -51,6 +58,42 @@ export const metadata: Metadata = {
       "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
     images: ["/og-image.png"],
   }
+    site: "@fluintech",
+    creator: "@fluintech",
+    title: "Lista de Espera - Aula Gratuita de Automações",
+    description: "Aprenda n8n, Evolution API, OpenAI e automações escaláveis. Inscreva-se na lista de espera.",
+    images: {
+      url: "/og-image.jpg",
+      alt: "Fluintech - Aula Gratuita",
+    },
+  },
+  category: "Technology",
+}
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "EducationalEvent",
+  name: "Aula Gratuita de Automações Avançadas - Fluintech",
+  description: "Aprenda a criar automações escaláveis com n8n, Evolution API, OpenAI e WhatsApp",
+  eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+  eventStatus: "https://schema.org/EventScheduled",
+  organizer: {
+    "@type": "Organization",
+    name: "Fluintech",
+    url: "https://www.fluintech.com.br",
+    sameAs: [
+      "https://www.instagram.com/fluintech",
+      "https://www.facebook.com/profile.php?id=61578914720363",
+      "https://www.youtube.com/channel/UCX6YDzQX_M8uu8qkK4aTo1g",
+    ],
+  },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "BRL",
+    availability: "https://schema.org/InStock",
+  },
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
 }
 
 export default function RootLayout({
@@ -98,6 +141,34 @@ export default function RootLayout({
         {children}
         <Analytics />
         <SpeedInsights />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#7c3aed" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+        <meta name="msapplication-TileColor" content="#7c3aed" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Fluintech" />
+        <meta name="format-detection" content="telephone=no" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      </head>
+      <body
+        className={`font-sans ${GeistSans.variable} ${GeistMono.variable} bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 min-h-screen antialiased`}
+      >
+        <Suspense fallback={null}>{children}</Suspense>
+        <Toaster />
+        <Analytics />
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
       </body>
     </html>
   )
