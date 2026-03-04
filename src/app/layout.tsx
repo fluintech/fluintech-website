@@ -1,17 +1,10 @@
 import type React from "react"
-<<<<<<< HEAD
-import { Analytics } from "@vercel/analytics/next"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import type { Metadata, Viewport } from "next"
-import { Inter } from "next/font/google"
-=======
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { Toaster } from "@/components/ui/toaster"
->>>>>>> origin/main
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -67,11 +60,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "pt_BR",
-<<<<<<< HEAD
-    url: "https://www.fluintech.com.br",
-=======
     url: "https://www.fluintech.com.br/lista-espera",
->>>>>>> origin/main
     siteName: "Fluintech",
     title: "Lista de Espera - Aula Gratuita de Automações Avançadas",
     description: "Aprenda a criar automações escaláveis com n8n, WhatsApp e IA. Entre na lista de espera.",
@@ -87,13 +76,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-<<<<<<< HEAD
-    title: "Fluintech - Automação Inteligente com IA",
-    description:
-      "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
-    images: ["/og-image.png"],
-  }
-=======
     site: "@fluintech",
     creator: "@fluintech",
     title: "Lista de Espera - Aula Gratuita de Automações",
@@ -129,7 +111,6 @@ const jsonLd = {
     priceCurrency: "BRL",
     availability: "https://schema.org/InStock",
   },
->>>>>>> origin/main
 }
 
 export default function RootLayout({
@@ -140,45 +121,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="scroll-smooth">
       <head>
-<<<<<<< HEAD
-        <link rel="canonical" href="https://www.fluintech.com.br" />
-        <meta name="geo.region" content="BR" />
-        <meta name="geo.placename" content="Paraná" />
-        <meta name="geo.position" content="-23.419018564247832;-51.93836327766127" />
-        <meta name="ICBM" content="-23.419018564247832, -51.93836327766127" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Fluintech",
-              url: "https://www.fluintech.com.br",
-              logo: "https://www.fluintech.com.br/logo.png",
-              description:
-                "Startup brasileira especializada em automação inteligente para atendimento ao cliente e agendamento de serviços com IA.",
-              address: {
-                "@type": "PostalAddress",
-                addressCountry: "BR",
-                addressRegion: "PR",
-                addressLocality: "Paraná",
-              },
-              contactPoint: {
-                "@type": "ContactPoint",
-                telephone: "+55-44-99864-4440",
-                contactType: "customer service",
-                availableLanguage: "Portuguese",
-              },
-              sameAs: ["https://linkedin.com/company/fluintech", "https://instagram.com/fluintech"],
-            }),
-          }}
-        />
-      </head>
-      <body className={inter.className}>
-        {children}
-        <Analytics />
-        <SpeedInsights />
-=======
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#7c3aed" media="(prefers-color-scheme: dark)" />
@@ -206,7 +148,6 @@ export default function RootLayout({
         <Suspense fallback={null}>{children}</Suspense>
         <Toaster />
         <Analytics />
->>>>>>> origin/main
       </body>
     </html>
   )
