@@ -12,6 +12,7 @@ import {
   Menu, X, Play, ArrowRight, Zap, MessageCircle, CheckCircle2, 
   Calendar, Repeat2, BarChart3, Bot, TrendingUp, Clock, Users
 } from "lucide-react"
+import { WhatsAppButton } from "@/components/whastapp-button"
 
 const WHATSAPP_URL = "https://api.whatsapp.com/send/?phone=554431010224&text=Ol%C3%A1%21+Gostaria+de+saber+mais+sobre+a+automa%C3%A7%C3%A3o+com+IA.&type=phone_number&app_absent=0"
 
@@ -577,5 +578,156 @@ export default function FluintechLanding() {
 
       <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
     </div>
+            {/* Contact Info Cards */}
+            <FadeInView delay={0.6}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
+                {[
+                  { icon: MapPin, title: "Endereço", info: "Maringá, PR - Brasil" },
+                  { icon: Mail, title: "E-mail", info: "contato@fluintech.com.br" },
+                  { icon: Phone, title: "Telefone", info: "(44) 99864-4440" },
+                ].map((contact, index) => (
+                  <motion.div key={index} whileHover={{ scale: 1.05 }} transition={{ type: "spring", stiffness: 300 }}>
+                    <Card className="bg-white/5 backdrop-blur-md border-purple-500/20 hover:border-purple-500/40 transition-all duration-300">
+                      <CardContent className="p-6 text-center">
+                        <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                          <contact.icon className="w-6 h-6 text-white" />
+                        </div>
+                        <h4 className="text-white font-semibold mb-2">{contact.title}</h4>
+                        <p className="text-gray-400">{contact.info}</p>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </FadeInView>
+
+            {/* WhatsApp CTA */}
+            <FadeInView delay={0.9}>
+              <div className="text-center mt-8">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                >
+                <WhatsAppButton />
+                </motion.div>
+              </div>
+            </FadeInView>
+
+            {/* Onboarding Modal */}
+            <OnboardingModal open={showOnboardingForm} onOpenChange={setShowOnboardingForm} />
+          </div>
+        </section>
+
+        {/* Footer */}
+        <footer className="bg-black/40 backdrop-blur-md border-t border-purple-500/20 py-12 px-4 relative">
+          <div className="container mx-auto">
+            <FadeInView>
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    className="flex items-center space-x-2 mb-4"
+                  >
+                    <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                      <Bot className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-2xl font-bold text-white">Fluintech</span>
+                  </motion.div>
+                  <p className="text-gray-400 mb-4">Automatização inteligente para o futuro dos negócios.</p>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-semibold mb-4">Soluções</h4>
+                  <ul className="space-y-2 text-gray-400">
+                    {["Agendamentos IA", "Chatbots", "Automação", "Analytics"].map((item, index) => (
+                      <motion.li
+                        key={item}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <a href="#" className="hover:text-purple-400 transition-colors">
+                          {item}
+                        </a>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-semibold mb-4">Empresa</h4>
+                  <ul className="space-y-2 text-gray-400">
+                    {[
+                      { text: "Sobre nós", href: "#sobre" },
+                      { text: "Blog", href: "#" },
+                      { text: "Carreiras", href: "#" },
+                      { text: "Contato", href: "#contato" },
+                    ].map((item, index) => (
+                      <motion.li
+                        key={item.text}
+                        initial={{ opacity: 0, x: -20 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.1 }}
+                      >
+                        <a href={item.href} className="hover:text-purple-400 transition-colors">
+                          {item.text}
+                        </a>
+                      </motion.li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-white font-semibold mb-4">Newsletter</h4>
+                  <p className="text-gray-400 mb-4">Receba novidades sobre IA</p>
+                  <div className="flex space-x-2">
+                    <Input
+                      placeholder="Seu e-mail"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="bg-white/10 border-purple-500/30 text-white placeholder-gray-400"
+                    />
+                    <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 px-4">
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </FadeInView>
+
+            <div className="border-t border-purple-500/20 pt-8 text-center">
+              © {new Date().getFullYear()} Fluintech. Todos os direitos reservados.
+            </div>
+
+          </div>
+        </footer>
+
+        <style jsx>{`
+          .neural-network {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+              radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+              radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+            animation: float 20s ease-in-out infinite;
+          }
+          
+          @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(1deg); }
+            66% { transform: translateY(10px) rotate(-1deg); }
+          }
+        `}</style>
+      </div>
+    </PageTransition>
+>>>>>>> 40ff3f2 (feat: update landing page)
+      <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
+    </div>
+>>>>>>> 44cfb9a (Resolve merge markers in src/app/page.tsx — prefer origin/main content)
   )
 }

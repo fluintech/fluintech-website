@@ -1,81 +1,63 @@
 import type React from "react"
+import { Analytics } from "@vercel/analytics/next"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import type { Metadata, Viewport } from "next"
+import { Inter } from "next/font/google"
+import { Inter } from "next/font/google"
 import type { Metadata } from "next"
 import { GeistSans } from "geist/font/sans"
 import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import { Toaster } from "@/components/ui/toaster"
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
 import "./globals.css"
 
+const inter = Inter({ subsets: ["latin"] })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
+
 export const metadata: Metadata = {
-  title: {
-    default: "Lista de Espera - Aula Gratuita de Automações | Fluintech",
-    template: "%s | Fluintech",
-  },
+  title: "Fluintech - Automação Inteligente com IA | Atendimento e Agendamentos",
   description:
-    "Entre na lista de espera para a aula gratuita sobre n8n, Evolution API, OpenAI e automações inteligentes. Aprenda a criar automações escaláveis do zero.",
-  generator: "Next.js",
-  applicationName: "Fluintech",
-  keywords: [
-    "n8n",
-    "automação",
-    "IA",
-    "WhatsApp",
-    "Evolution API",
-    "OpenAI",
-    "VPS",
-    "self-hosted",
-    "automações avançadas",
-    "curso n8n",
-    "aula gratuita automação",
-  ],
-  authors: [{ name: "Fluintech", url: "https://www.fluintech.com.br" }],
+    "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes. Reduza 70% do tempo de resposta.",
+  keywords:
+    "automação, inteligência artificial, chatbot, agendamento inteligente, atendimento automatizado, IA, Brasil",
+  authors: [{ name: "Fluintech" }],
   creator: "Fluintech",
   publisher: "Fluintech",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL("https://www.fluintech.com.br"),
-  alternates: {
-    canonical: "/lista-espera",
-    languages: {
-      "pt-BR": "/lista-espera",
-    },
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      noimageindex: false,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+  robots: "index, follow",
   openGraph: {
     type: "website",
     locale: "pt_BR",
+    url: "https://www.fluintech.com.br",
     url: "https://www.fluintech.com.br/lista-espera",
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
     siteName: "Fluintech",
-    title: "Lista de Espera - Aula Gratuita de Automações Avançadas",
-    description: "Aprenda a criar automações escaláveis com n8n, WhatsApp e IA. Entre na lista de espera.",
+    title: "Fluintech - Automação Inteligente com IA",
+    description:
+      "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Fluintech - Aula Gratuita de Automações",
-        type: "image/jpeg",
+        alt: "Fluintech - Automação Inteligente",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
+    title: "Fluintech - Automação Inteligente com IA",
+    description:
+      "Transforme seu atendimento com inteligência artificial. Automatize agendamentos, chatbots 24/7 e fluxos inteligentes.",
+    images: ["/og-image.png"],
+  }
     site: "@fluintech",
     creator: "@fluintech",
     title: "Lista de Espera - Aula Gratuita de Automações",
@@ -111,16 +93,54 @@ const jsonLd = {
     priceCurrency: "BRL",
     availability: "https://schema.org/InStock",
   },
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
 }
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode
-}>) {
+}) {
   return (
-    <html lang="pt-BR" className="scroll-smooth">
+    <html lang="pt-BR">
       <head>
+        <link rel="canonical" href="https://www.fluintech.com.br" />
+        <meta name="geo.region" content="BR" />
+        <meta name="geo.placename" content="Paraná" />
+        <meta name="geo.position" content="-23.419018564247832;-51.93836327766127" />
+        <meta name="ICBM" content="-23.419018564247832, -51.93836327766127" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Fluintech",
+              url: "https://www.fluintech.com.br",
+              logo: "https://www.fluintech.com.br/logo.png",
+              description:
+                "Startup brasileira especializada em automação inteligente para atendimento ao cliente e agendamento de serviços com IA.",
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: "BR",
+                addressRegion: "PR",
+                addressLocality: "Paraná",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+55-44-99864-4440",
+                contactType: "customer service",
+                availableLanguage: "Portuguese",
+              },
+              sameAs: ["https://linkedin.com/company/fluintech", "https://instagram.com/fluintech"],
+            }),
+          }}
+        />
+      </head>
+      <body className={inter.className}>
+        {children}
+        <Analytics />
+        <SpeedInsights />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#7c3aed" media="(prefers-color-scheme: dark)" />
@@ -148,7 +168,9 @@ export default function RootLayout({
         <Suspense fallback={null}>{children}</Suspense>
         <Toaster />
         <Analytics />
+>>>>>>> 2ff3576 (Resolve merge markers in src/app/layout.tsx — prefer origin/main layout)
       </body>
     </html>
   )
 }
+>>>>>>> 40ff3f2 (feat: update landing page)
