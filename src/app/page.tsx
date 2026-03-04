@@ -578,7 +578,8 @@ export default function FluintechLanding() {
 
       <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
     </div>
-            {/* Contact Info Cards */}
+
+    {/* Contact Info Cards */}
             <FadeInView delay={0.6}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
                 {[
