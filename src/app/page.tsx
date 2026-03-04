@@ -1,514 +1,582 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion } from "framer-motion"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { FadeInView } from "@/components/animations/fade-in-view"
-import { PageTransition } from "@/components/animations/page-transition"
-import { AutomationFlow } from "@/components/animations/automation-flow"
-import { OnboardingModal } from "@/components/onboarding-modal"
-import {
-  Bot,
-  Calendar,
-  Zap,
-  BarChart3,
-  ArrowRight,
-  Play,
-  Star,
-  Users,
-  Target,
-  Lightbulb,
-  MapPin,
-  Phone,
-  Mail,
-  MessageCircle,
-  ChevronLeft,
-  ChevronRight,
-  Menu,
-  X,
+import { Logo } from "@/components/logo"
+import { WhatsAppChat } from "@/components/whatsapp-chat"
+import { Footer } from "@/components/footer"
+import { DemoModal } from "@/components/demo-modal"
+import { 
+  Menu, X, Play, ArrowRight, Zap, MessageCircle, CheckCircle2, 
+  Calendar, Repeat2, BarChart3, Bot, TrendingUp, Clock, Users
 } from "lucide-react"
 import { WhatsAppButton } from "@/components/whastapp-button"
 
-export default function FluintechWebsite() {
+const WHATSAPP_URL = "https://api.whatsapp.com/send/?phone=554431010224&text=Ol%C3%A1%21+Gostaria+de+saber+mais+sobre+a+automa%C3%A7%C3%A3o+com+IA.&type=phone_number&app_absent=0"
+
+export default function FluintechLanding() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [currentTestimonial, setCurrentTestimonial] = useState(0)
-  const [email, setEmail] = useState("")
-  const [showOnboardingForm, setShowOnboardingForm] = useState(false)
-
-  const testimonials = [
-    {
-      name: "Carlos Silva",
-      company: "TechServ Solutions",
-      text: "A Fluintech revolucionou nosso atendimento. Reduzimos 70% do tempo de resposta e aumentamos a satisfação dos clientes.",
-      rating: 5,
-    },
-    {
-      name: "Ana Costa",
-      company: "Manutenção Express",
-      text: "Os agendamentos inteligentes otimizaram nossa operação. Agora conseguimos atender 3x mais clientes com a mesma equipe.",
-      rating: 5,
-    },
-    {
-      name: "Roberto Oliveira",
-      company: "ServicePro",
-      text: "A automação com IA da Fluintech nos permitiu focar no que realmente importa: entregar um serviço excepcional.",
-      rating: 5,
-    },
-  ]
-
-  const features = [
-    {
-      icon: Calendar,
-      title: "Agendamentos Inteligentes",
-      description: "IA que otimiza horários e recursos automaticamente, reduzindo conflitos e maximizando eficiência.",
-    },
-    {
-      icon: Bot,
-      title: "Atendimento Automatizado",
-      description: "Chatbots inteligentes que resolvem 80% das dúvidas dos clientes 24/7, com linguagem natural.",
-    },
-    {
-      icon: Zap,
-      title: "Fluxos com IA",
-      description: "Automação completa de processos com inteligência artificial adaptativa e aprendizado contínuo.",
-    },
-    {
-      icon: BarChart3,
-      title: "Relatórios Inteligentes",
-      description: "Analytics avançados com insights acionáveis para otimizar sua operação continuamente.",
-    },
-  ]
+  const [isDemoOpen, setIsDemoOpen] = useState(false)
+  const [animatedStats, setAnimatedStats] = useState({ leads: 0, response: 0, cost: 0 })
+  const [floatingDots, setFloatingDots] = useState<Array<{left: string, delay: string, duration: string}>>([])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    return () => clearInterval(interval)
+    const dots = [...Array(15)].map(() => ({
+      left: `${Math.random() * 100}%`,
+      delay: `${Math.random() * 8}s`,
+      duration: `${6 + Math.random() * 4}s`
+    }))
+    setFloatingDots(dots)
   }, [])
 
-  const nextTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
-  }
-
-  const prevTestimonial = () => {
-    setCurrentTestimonial((prev) => (prev - 1 + testimonials.length) % testimonials.length)
-  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimatedStats({ leads: 85, response: 5, cost: 80 })
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
-    <PageTransition>
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        {/* Animated Background */}
-        <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=60 height=60 viewBox=0 0 60 60 xmlns=http://www.w3.org/2000/svg%3E%3Cg fill=none fillRule=evenodd%3E%3Cg fill=%239C92AC fillOpacity=0.1%3E%3Ccircle cx=30 cy=30 r=1/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] animate-pulse"></div>
-          <div className="neural-network"></div>
-        </div>
+    <div className="min-h-screen relative bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
+      <style jsx global>{`
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: rgba(139, 92, 246, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+          background: rgba(37, 211, 102, 0.3);
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: rgba(37, 211, 102, 0.5);
+        }
+        
+        html {
+          scroll-behavior: smooth;
+        }
+        
+        .fade-in-section {
+          opacity: 0;
+          transform: translateY(30px);
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+        
+        @keyframes fadeInUp {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .floating-elements {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          pointer-events: none;
+        }
+        
+        .floating-dot {
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          background: rgba(37, 211, 102, 0.3);
+          border-radius: 50%;
+          animation: float 8s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+          0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+          10% { opacity: 0.6; }
+          90% { opacity: 0.6; }
+          100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
 
-        {/* Header */}
-        <motion.header
-          initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="relative z-50 bg-black/20 backdrop-blur-md border-b border-purple-500/20 sticky top-0"
-        >
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.2, type: "spring" }}
-                className="flex items-center space-x-2"
+        .gradient-text {
+          background: linear-gradient(135deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        .stat-card {
+          backdrop-filter: blur(10px);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(37, 211, 102, 0.2);
+        }
+
+        .stat-card:hover {
+          background: rgba(37, 211, 102, 0.1);
+          border-color: rgba(37, 211, 102, 0.4);
+        }
+      `}</style>
+
+      <div className="floating-elements" aria-hidden="true">
+        {floatingDots.map((dot, i) => (
+          <div
+            key={i}
+            className="floating-dot"
+            style={{
+              left: dot.left,
+              animationDelay: dot.delay,
+              animationDuration: dot.duration,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* ===== HEADER ===== */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-purple-900/80 backdrop-blur-md border-b border-emerald-500/20 px-4 py-4 lg:px-8 transition-all duration-300">
+        <nav className="flex items-center justify-between max-w-7xl mx-auto" aria-label="Menu principal">
+          <div className="flex items-center space-x-3">
+            <Logo size="medium" href="/" />
+            <span className="text-xl font-bold text-white hidden sm:inline">Fluintech</span>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#inicio" className="text-white/90 hover:text-white transition-colors duration-300">
+              Início
+            </a>
+            <a href="#recursos" className="text-white/90 hover:text-white transition-colors duration-300">
+              Recursos
+            </a>
+            <a href="#lia" className="text-white/90 hover:text-white transition-colors duration-300">
+              Sobre a Lia
+            </a>
+            <a href="/lista-espera" className="text-white/90 hover:text-white transition-colors duration-300">
+              Lista de espera
+            </a>
+            <a href="/blog" className="text-white/90 hover:text-white transition-colors duration-300">
+              Blog
+            </a>
+            <Button 
+              onClick={() => window.open(WHATSAPP_URL, "_blank")}
+              className="bg-emerald-500 hover:bg-emerald-600 text-white border-0 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/40 cursor-pointer font-semibold"
+            >
+              <MessageCircle className="mr-2 w-4 h-4" />
+              Falar agora
+            </Button>
+          </div>
+
+          <button
+            className="md:hidden text-white transition-transform hover:scale-110"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </nav>
+
+        {isMenuOpen && (
+          <div className="md:hidden absolute top-full left-0 right-0 bg-purple-900/95 backdrop-blur-sm border-t border-emerald-500/20 animate-in slide-in-from-top duration-300">
+            <nav className="px-4 py-6 space-y-4">
+              <a href="#inicio" className="block text-white/90 hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>
+                Início
+              </a>
+              <a href="#recursos" className="block text-white/90 hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>
+                Recursos
+              </a>
+              <a href="#lia" className="block text-white/90 hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>
+                Sobre a Lia
+              </a>
+              <a href="/blog" className="block text-white/90 hover:text-white transition-colors" onClick={() => setIsMenuOpen(false)}>
+                Blog
+              </a>
+              <Button 
+                onClick={() => {
+                  setIsDemoOpen(true)
+                  setIsMenuOpen(false)
+                }}
+                className="w-full bg-emerald-500 hover:bg-emerald-600 text-white border-0 font-semibold"
               >
-                <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-white" />
+                <MessageCircle className="mr-2 w-4 h-4" />
+                Falar agora
+              </Button>
+            </nav>
+          </div>
+        )}
+      </header>
+
+      <main>
+        {/* ===== HERO SECTION ===== */}
+        <section id="inicio" className="px-4 py-16 lg:px-8 lg:py-24 pt-32 fade-in-section">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="text-center lg:text-left">
+                <Badge className="mb-6 bg-emerald-500/20 text-emerald-100 border-emerald-500/50 hover:bg-emerald-500/30 transition-all duration-300 inline-block">
+                  <div className="w-4 h-4 rounded-full overflow-hidden inline-block mr-2 -ml-1 border border-emerald-300 bg-white flex-shrink-0 relative">
+                    <Image 
+                      src="/lia-avatar.png" 
+                      alt="Lia" 
+                      fill
+                      className="object-cover"
+                      sizes="16px"
+                      priority
+                    />
+                  </div>
+                  Converse com a Lia - Agentes de IA
+                </Badge>
+
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 text-balance leading-tight">
+                  Agentes de IA que trabalham{" "}
+                  <span className="gradient-text font-black">no seu WhatsApp</span>
+                </h1>
+
+                <p className="text-lg md:text-xl text-white/90 mb-8 text-pretty leading-relaxed font-medium">
+                  Automatize atendimento, qualifique leads, agende consultas e gerencie sua agenda com agentes de IA personalizados. Tudo acontecendo no WhatsApp, 24/7, sem parar.
+                </p>
+
+                <div className="space-y-4 mb-10">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-white/90 font-medium">SDR que qualifica seus leads</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-white/90 font-medium">Agentes que marcam consultas e agendamentos</span>
+                  </div>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle2 className="w-6 h-6 text-emerald-400 flex-shrink-0 mt-0.5" />
+                    <span className="text-white/90 font-medium">Atendimento automático 24/7 personalizado</span>
+                  </div>
                 </div>
-                <span className="text-2xl font-bold text-white">Fluintech</span>
-              </motion.div>
 
-              <nav className="hidden md:flex items-center space-x-8">
-                {["Início", "Soluções", "Sobre", "Contato"].map((item, index) => (
-                  <motion.a
-                    key={item}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + index * 0.1 }}
-                    href={`#${item.toLowerCase()}`}
-                    className="text-gray-300 hover:text-purple-400 transition-colors"
-                  >
-                    {item}
-                  </motion.a>
-                ))}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.7 }}
-                >
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
                   <Button
-                    onClick={() => setShowOnboardingForm(true)}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-full transition-all duration-300 transform hover:scale-105"
+                    size="lg"
+                    onClick={() => window.open(WHATSAPP_URL, "_blank")}
+                    className="bg-emerald-500 hover:bg-emerald-600 text-white border-0 text-base px-8 py-6 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 cursor-pointer font-semibold"
                   >
-                    Comece Agora
+                    <MessageCircle className="mr-2 w-5 h-5" />
+                    Converse com a Lia
                   </Button>
-                </motion.div>
-              </nav>
+                  <Button
+                    size="lg"
+                    className="bg-emerald-400 hover:bg-emerald-500 text-purple-900 border-0 text-base px-8 py-6 transition-all duration-300 font-semibold cursor-pointer hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/50"
+                    onClick={() => setIsDemoOpen(true)}
+                  >
+                    <Play className="mr-2 w-5 h-5" />
+                    Ver demonstração
+                  </Button>
+                </div>
+              </div>
 
-              <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                {isMenuOpen ? <X /> : <Menu />}
-              </button>
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-3xl blur-3xl"></div>
+                <Button 
+                  onClick={() => setIsDemoOpen(true)}
+                  className="bg-gradient-to-br from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 text-white border-0 text-base px-6 py-4 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 cursor-pointer font-semibold absolute top-6 right-6 z-20"
+                >
+                  Ver mais agentes
+                </Button>
+                <div className="relative z-10">
+                  <WhatsAppChat />
+                  {/* <div className="absolute -top-8 -right-8 w-24 h-24 rounded-full border-4 border-emerald-500 shadow-lg shadow-emerald-500/50 overflow-hidden bg-white relative">
+                    <Image 
+                      src="/lia-avatar.png" 
+                      alt="Avatar da Lia" 
+                      fill
+                      className="object-cover"
+                      sizes="96px"
+                      priority
+                    />
+                  </div> */}
+                </div>
+              </div>
             </div>
 
-            {/* Mobile Menu */}
-            <motion.div
-              initial={false}
-              animate={{ height: isMenuOpen ? "auto" : 0, opacity: isMenuOpen ? 1 : 0 }}
-              className="md:hidden overflow-hidden"
-            >
-              <div className="mt-4 pb-4 border-t border-purple-500/20">
-                <nav className="flex flex-col space-y-4 mt-4">
-                  {["Início", "Soluções", "Sobre", "Contato"].map((item) => (
-                    <a
-                      key={item}
-                      href={`#${item.toLowerCase()}`}
-                      className="text-gray-300 hover:text-purple-400 transition-colors"
-                    >
-                      {item}
-                    </a>
-                  ))}
-                  <Button
-                    onClick={() => setShowOnboardingForm(true)}
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-full w-fit"
-                  >
-                    Comece Agora
-                  </Button>
-                </nav>
+            {/* ===== STATISTICS ===== */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto mt-20" role="region" aria-label="Estatísticas de desempenho">
+              <div className="stat-card p-8 rounded-2xl text-center transition-all duration-300 hover:scale-105">
+                <div className="flex justify-center mb-4">
+                  <div className="w-14 h-14 bg-emerald-500/20 rounded-full flex items-center justify-center">
+                    <TrendingUp className="w-7 h-7 text-emerald-400" />
+                  </div>
+                </div>
+                <p className="text-4xl md:text-5xl font-bold text-emerald-400 mb-2">
+                  {animatedStats.leads}%
+                </p>
+                <p className="text-white/80 font-semibold">Leads qualificados</p>
               </div>
-            </motion.div>
-          </div>
-        </motion.header>
 
-        {/* Hero Section */}
-        <section id="início" className="relative min-h-screen flex items-center justify-center px-4">
-          <div className="container mx-auto text-center relative z-10">
-            <FadeInView delay={0.2}>
-              <Badge className="mb-6 bg-purple-500/20 text-purple-300 border-purple-500/30 px-4 py-2 text-sm animate-pulse">
-                🚀 Tecnologia de IA de Última Geração
-              </Badge>
-            </FadeInView>
-
-            <FadeInView delay={0.4}>
-              <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                Automatize seu atendimento com{" "}
-                <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                  inteligência artificial
-                </span>
-              </h1>
-            </FadeInView>
-
-            <FadeInView delay={0.6}>
-              <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Transforme sua operação com agentes inteligentes que atendem clientes 24/7 e otimizam agendamentos
-                automaticamente.
-              </p>
-            </FadeInView>
-
-            <FadeInView delay={0.8}>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-                <Button
-                  size="lg"
-                  onClick={() => setShowOnboardingForm(true)}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
-                >
-                  Comece sua automação hoje
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-purple-500/50 text-purple-300 hover:bg-purple-500/10 px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 bg-transparent"
-                >
-                  <Play className="mr-2 w-5 h-5" />
-                  Ver demonstração
-                </Button>
+              <div className="stat-card p-8 rounded-2xl text-center transition-all duration-300 hover:scale-105">
+                <div className="flex justify-center mb-4">
+                  <div className="w-14 h-14 bg-emerald-500/20 rounded-full flex items-center justify-center">
+                    <Clock className="w-7 h-7 text-emerald-400" />
+                  </div>
+                </div>
+                <p className="text-4xl md:text-5xl font-bold text-emerald-400 mb-2">
+                  &lt;{animatedStats.response}s
+                </p>
+                <p className="text-white/80 font-semibold">Tempo de resposta</p>
               </div>
-            </FadeInView>
 
-            {/* Stats */}
-            <FadeInView delay={1.0}>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
-                {[
-                  { value: "70%", label: "Redução no tempo de resposta", color: "text-purple-400" },
-                  { value: "24/7", label: "Atendimento automatizado", color: "text-blue-400" },
-                  { value: "3x", label: "Mais eficiência operacional", color: "text-purple-400" },
-                ].map((stat, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.2 + index * 0.2 }}
-                    className="text-center"
-                  >
-                    <div className={`text-3xl font-bold ${stat.color} mb-2`}>{stat.value}</div>
-                    <div className="text-gray-400">{stat.label}</div>
-                  </motion.div>
-                ))}
+              <div className="stat-card p-8 rounded-2xl text-center transition-all duration-300 hover:scale-105">
+                <div className="flex justify-center mb-4">
+                  <div className="w-14 h-14 bg-emerald-500/20 rounded-full flex items-center justify-center">
+                    <BarChart3 className="w-7 h-7 text-emerald-400" />
+                  </div>
+                </div>
+                <p className="text-4xl md:text-5xl font-bold text-emerald-400 mb-2">
+                  -{animatedStats.cost}%
+                </p>
+                <p className="text-white/80 font-semibold">Redução de custos</p>
               </div>
-            </FadeInView>
+            </div>
           </div>
         </section>
 
-        {/* Features Section */}
-        <section id="soluções" className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  Soluções que{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    transformam
-                  </span>
-                </h2>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                  Descubra como nossa inteligência artificial pode revolucionar sua operação
-                </p>
-              </div>
-            </FadeInView>
+        {/* ===== RECURSOS ===== */}
+        <section id="recursos" className="px-4 py-16 lg:px-8 lg:py-24 bg-white/5 backdrop-blur border-y border-emerald-500/20 fade-in-section">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                Tipos de agentes de IA que você pode criar
+              </h2>
+              <p className="text-xl text-white/80 max-w-3xl mx-auto">
+                Personalize agentes para diferentes necessidades do seu negócio
+              </p>
+            </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {features.map((feature, index) => (
-                <FadeInView key={index} delay={index * 0.2}>
-                  <motion.div whileHover={{ scale: 1.05, y: -10 }} transition={{ type: "spring", stiffness: 300 }}>
-                    <Card className="bg-white/5 backdrop-blur-md border-purple-500/20 hover:border-purple-500/40 transition-all duration-300 h-full group">
-                      <CardContent className="p-6 text-center">
-                        <motion.div
-                          whileHover={{ rotate: 360 }}
-                          transition={{ duration: 0.6 }}
-                          className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-4"
-                        >
-                          <feature.icon className="w-8 h-8 text-white" />
-                        </motion.div>
-                        <h3 className="text-xl font-semibold text-white mb-3">{feature.title}</h3>
-                        <p className="text-gray-300 leading-relaxed">{feature.description}</p>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                </FadeInView>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  icon: Users,
+                  title: "SDR Automático",
+                  description: "Qualifica leads, coleta informações e encaminha para vendas"
+                },
+                {
+                  icon: Calendar,
+                  title: "Agendador Inteligente",
+                  description: "Marca consultas, sincroniza calendário e confirma automaticamente"
+                },
+                {
+                  icon: MessageCircle,
+                  title: "Atendimento 24/7",
+                  description: "Responde perguntas frequentes e direciona para equipe quando necessário"
+                },
+                {
+                  icon: Repeat2,
+                  title: "Follow-up Automático",
+                  description: "Dispara mensagens personalizadas em momentos estratégicos"
+                }
+              ].map((agent, i) => {
+                const IconComponent = agent.icon
+                return (
+                  <div key={i} className="p-6 rounded-xl bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 border border-emerald-400/30 hover:border-emerald-400/60 transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/15 hover:scale-105 cursor-pointer">
+                    <div className="flex items-center justify-center w-12 h-12 rounded-lg bg-emerald-500/20 mb-4">
+                      <IconComponent className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <h3 className="text-lg font-bold text-white mb-2">{agent.title}</h3>
+                    <p className="text-white/70 text-sm">{agent.description}</p>
+                  </div>
+                )
+              })}
+            </div>
+
+            <div className="mt-12 text-center">
+              <p className="text-white/80 text-lg mb-6">Crie o agente perfeito para seu negócio</p>
+              <Button
+                size="lg"
+                onClick={() => window.open(WHATSAPP_URL, "_blank")}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white border-0 text-base px-8 py-6 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 cursor-pointer font-semibold"
+              >
+                <MessageCircle className="mr-2 w-5 h-5" />
+                Converse com a Lia
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* ===== CONHEÇA A LIA ===== */}
+        <section id="lia" className="px-4 py-16 lg:px-8 lg:py-24 bg-gradient-to-br from-emerald-600/10 to-cyan-600/10 border-y border-emerald-500/20 fade-in-section">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <div className="flex justify-center lg:justify-end order-2 lg:order-1">
+                <div className="relative w-80 h-80">
+                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 rounded-3xl blur-3xl"></div>
+                  <div className="relative z-10 w-full h-full rounded-3xl border-4 border-emerald-400/50 overflow-hidden shadow-2xl shadow-emerald-500/30">
+                    <Image 
+                      src="/lia.png" 
+                      alt="Lia - Assistente de IA da Fluintech" 
+                      fill
+                      className="object-cover"
+                      sizes="320px"
+                      priority
+                    />
+                  </div>
+                  <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-emerald-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/50 z-20">
+                    <div className="text-center">
+                      <MessageCircle className="w-8 h-8 text-white mx-auto mb-1" />
+                      <p className="text-white text-xs font-bold">IA</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-center lg:text-left order-1 lg:order-2">
+                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                  Conheça a <span className="gradient-text">Lia</span>
+                </h2>
+                <p className="text-xl text-white/90 mb-8 leading-relaxed font-medium">
+                  Lia é a assistente de IA da Fluintech. Ela é humanizada, entende seu negócio, responde suas dúvidas sobre automação e mostra qual agente certo para você. E o melhor: ela mesma é um exemplo vivo de um agente autônomo que trabalha 24/7 sem parar.
+                </p>
+
+                <div className="space-y-4 mb-10">
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-1">Entende seu contexto</h3>
+                      <p className="text-white/70">Faz as perguntas certas e realmente te ouve para entender seu negócio em detalhes</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-1">Explica com clareza</h3>
+                      <p className="text-white/70">Responde suas dúvidas em texto, áudio (basta pedir) e até interpreta imagens do seu negócio</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-1">Faz follow-up</h3>
+                      <p className="text-white/70">Acompanha sua jornada e retorna com recomendações personalizadas sempre que você precisa</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center flex-shrink-0 mt-1">
+                      <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                    </div>
+                    <div>
+                      <h3 className="text-lg font-semibold text-white mb-1">Encaminha para atendimento</h3>
+                      <p className="text-white/70">Quando precisa de um humano, ela conecta você ao time certo da Fluintech</p>
+                    </div>
+                  </div>
+                </div>
+
+              <Button
+                  size="lg"
+                  onClick={() => window.open(WHATSAPP_URL, "_blank")}
+                  className="bg-emerald-500 hover:bg-emerald-600 text-white border-0 text-base px-8 py-6 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 cursor-pointer font-semibold"
+                >
+                  <MessageCircle className="mr-2 w-5 h-5" />
+                  Quer ter um agente como a Lia?
+                </Button>
+                <p className="text-white/60 text-sm mt-4">Solicite uma demonstração</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ===== DEPOIMENTOS ===== */}
+        <section className="px-4 py-16 lg:px-8 lg:py-24 bg-white/5 backdrop-blur border-y border-emerald-500/20 fade-in-section">
+          <div className="max-w-7xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+                Agentes que transformaram negócios
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  text: "Implementamos em 2 dias e em 30 dias aumentamos qualificação de 40% para 85%. Nossa equipe agora foca apenas em leads prontos.",
+                  author: "Carlos Silva",
+                  role: "Diretor de Vendas • TechServ Solutions"
+                },
+                {
+                  text: "Agendamentos antes: 20% dos leads confirmavam. Agora com o agendador automático: 95% confirmação e zero cancelamentos.",
+                  author: "Marina Costa",
+                  role: "Gerente de Operações • CliniPro Saúde"
+                },
+                {
+                  text: "Reduzimos tempo de resposta de 8 horas para menos de 1 minuto. Satisfação de clientes subiu 40% em 3 meses.",
+                  author: "Rafael Santos",
+                  role: "CEO • ECommerce Solutions"
+                }
+              ].map((testimonial, i) => (
+                <div key={i} className="p-8 rounded-xl bg-gradient-to-br from-emerald-500/10 to-cyan-500/10 border border-emerald-400/30 hover:border-emerald-400/60 transition-all duration-300">
+                  <div className="flex justify-center mb-4 gap-1">
+                    {[...Array(5)].map((_, j) => (
+                      <span key={j} className="text-emerald-400 text-sm">★</span>
+                    ))}
+                  </div>
+                  <p className="text-white/90 text-lg mb-6 italic leading-relaxed">
+                    "{testimonial.text}"
+                  </p>
+                  <footer className="space-y-1 border-t border-emerald-400/20 pt-4">
+                    <p className="text-emerald-400 font-semibold">{testimonial.author}</p>
+                    <cite className="text-white/60 text-sm not-italic">{testimonial.role}</cite>
+                  </footer>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Automation Flow Demo */}
-        <section className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  Veja a{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    automação
-                  </span>{" "}
-                  em ação
-                </h2>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
-                  Fluxo inteligente de atendimento e agendamento funcionando 24/7
-                </p>
-              </div>
-            </FadeInView>
-
-            <FadeInView delay={0.3}>
-              <AutomationFlow />
-            </FadeInView>
-
-            <FadeInView delay={0.6}>
-              <div className="text-center mt-8">
-                <Button
-                  size="lg"
-                  onClick={() => setShowOnboardingForm(true)}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold transition-all duration-300 transform hover:scale-105"
-                >
-                  Solicite uma demonstração personalizada
-                  <ArrowRight className="ml-2 w-5 h-5" />
-                </Button>
-              </div>
-            </FadeInView>
-          </div>
-        </section>
-
-        {/* Testimonials */}
-        <section className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  O que nossos{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    clientes
-                  </span>{" "}
-                  dizem
-                </h2>
-              </div>
-            </FadeInView>
-
-            <FadeInView delay={0.3}>
-              <div className="max-w-4xl mx-auto relative">
-                <motion.div
-                  key={currentTestimonial}
-                  initial={{ opacity: 0, x: 100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card className="bg-white/5 backdrop-blur-md border-purple-500/20">
-                    <CardContent className="p-8 text-center">
-                      <div className="flex justify-center mb-4">
-                        {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                          <Star key={i} className="w-5 h-5 text-yellow-400 fill-current" />
-                        ))}
-                      </div>
-                      <blockquote className="text-xl md:text-2xl text-gray-300 mb-6 italic leading-relaxed">
-                        "{testimonials[currentTestimonial].text}"
-                      </blockquote>
-                      <div className="text-white font-semibold text-lg">{testimonials[currentTestimonial].name}</div>
-                      <div className="text-purple-400">{testimonials[currentTestimonial].company}</div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                <button
-                  onClick={prevTestimonial}
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 rounded-full transition-all duration-300"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-
-                <button
-                  onClick={nextTestimonial}
-                  className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white p-2 rounded-full transition-all duration-300"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-
-                <div className="flex justify-center mt-6 space-x-2">
-                  {testimonials.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => setCurrentTestimonial(index)}
-                      className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                        index === currentTestimonial ? "bg-purple-500" : "bg-white/30"
-                      }`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </FadeInView>
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section id="sobre" className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-              <FadeInView direction="left">
-                <div>
-                  <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                    Sobre a{" "}
-                    <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                      Fluintech
-                    </span>
-                  </h2>
-                  <p className="text-xl text-gray-300 mb-8 leading-relaxed">
-                    Somos uma startup brasileira especializada em automação inteligente para atendimento ao cliente e
-                    agendamento de serviços. Nossa missão é democratizar o acesso à inteligência artificial para
-                    empresas de pequeno porte e profissionais autônomos.
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    {[
-                      { icon: Target, title: "Missão", desc: "Democratizar IA para empresas" },
-                      { icon: Lightbulb, title: "Visão", desc: "Liderar automação inteligente" },
-                      { icon: Users, title: "Valores", desc: "Inovação e excelência" },
-                    ].map((item, index) => (
-                      <FadeInView key={index} delay={index * 0.2}>
-                        <div className="text-center">
-                          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <item.icon className="w-8 h-8 text-white" />
-                          </div>
-                          <h3 className="text-white font-semibold mb-2">{item.title}</h3>
-                          <p className="text-gray-400 text-sm">{item.desc}</p>
-                        </div>
-                      </FadeInView>
-                    ))}
-                  </div>
-                </div>
-              </FadeInView>
-
-              <FadeInView direction="right" delay={0.3}>
-                <Card className="bg-white/5 backdrop-blur-md border-purple-500/20">
-                  <CardContent className="p-8">
-                    <div className="space-y-6">
-                      {[
-                        { year: "2023", title: "Fundação", desc: "Início da jornada em IA" },
-                        { number: "50+", title: "Clientes", desc: "Empresas automatizadas" },
-                        { number: "24/7", title: "Suporte", desc: "Atendimento contínuo" },
-                      ].map((item, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, x: 50 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.2 }}
-                          className="flex items-center space-x-4"
-                        >
-                          <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center">
-                            <span className="text-white font-bold text-sm">{item.year || item.number}</span>
-                          </div>
-                          <div>
-                            <h4 className="text-white font-semibold">{item.title}</h4>
-                            <p className="text-gray-400">{item.desc}</p>
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </FadeInView>
+        {/* ===== CTA FINAL ===== */}
+        <section className="px-4 py-16 lg:px-8 lg:py-24 bg-gradient-to-r from-emerald-600/20 to-cyan-600/20 border-y border-emerald-400/30 fade-in-section">
+          <div className="max-w-4xl mx-auto text-center">
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+              Está pronto para transformar seu WhatsApp em canal de vendas?
+            </h2>
+            <p className="text-xl text-white/90 mb-10">
+              Fale agora mesmo com a Lia. Ela vai entender seu negócio e recomendar exatamente qual agente de IA você precisa.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                size="lg"
+                onClick={() => setIsDemoOpen(true)}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white border-0 text-base px-8 py-6 transition-all duration-300 hover:shadow-xl hover:shadow-emerald-500/40 cursor-pointer font-semibold"
+              >
+                <MessageCircle className="mr-2 w-5 h-5" />
+                Converse com a Lia
+              </Button>
+              <Button
+                size="lg"
+                className="bg-emerald-400 hover:bg-emerald-500 text-purple-900 border-0 text-base px-8 py-6 transition-all duration-300 font-semibold cursor-pointer hover:scale-105 hover:shadow-xl hover:shadow-emerald-500/50"
+                onClick={() => setIsDemoOpen(true)}
+              >
+                <Play className="mr-2 w-5 h-5" />
+                Ver agentes em ação
+              </Button>
             </div>
+            <p className="text-white/60 text-sm mt-8">
+              Resposta automática em menos de 1 minuto
+            </p>
           </div>
         </section>
+      </main>
 
-        {/* Onboarding Form Section */}
-        <section id="contato" className="py-20 px-4 relative">
-          <div className="container mx-auto">
-            <FadeInView>
-              <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                  Vamos automatizar seu{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                    atendimento?
-                  </span>
-                </h2>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-                  Responda algumas perguntas e descubra como podemos transformar sua operação
-                </p>
-              </div>
-            </FadeInView>
+      <Footer />
 
-            <FadeInView delay={0.3}>
-              <div className="text-center">
-                <Button
-                  size="lg"
-                  onClick={() => setShowOnboardingForm(true)}
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-12 py-6 rounded-full text-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-purple-500/25"
-                >
-                  Iniciar avaliação gratuita
-                  <ArrowRight className="ml-3 w-6 h-6" />
-                </Button>
-                <p className="text-gray-400 mt-4">⏱️ Leva apenas 2 minutos • 🔒 Seus dados estão protegidos</p>
-              </div>
-            </FadeInView>
+      {/* ===== BOTÃO FLUTUANTE WHATSAPP ===== */}
+      <aside className="fixed bottom-6 right-6 z-50">
+        <Button
+          size="icon"
+          className="bg-emerald-500 hover:bg-emerald-600 text-white rounded-full w-16 h-16 shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 group hover:shadow-emerald-500/40 cursor-pointer"
+          onClick={() => window.open(WHATSAPP_URL, "_blank")}
+          aria-label="Converse com a Lia no WhatsApp"
+        >
+          <svg className="w-8 h-8 group-hover:scale-110 transition-transform" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.465 3.516" />
+          </svg>
+        </Button>
+      </aside>
 
+<<<<<<< HEAD
             {/* Contact Info Cards */}
             <FadeInView delay={0.6}>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
@@ -656,5 +724,9 @@ export default function FluintechWebsite() {
         `}</style>
       </div>
     </PageTransition>
+=======
+      <DemoModal isOpen={isDemoOpen} onClose={() => setIsDemoOpen(false)} />
+    </div>
+>>>>>>> origin/main
   )
 }
