@@ -14,7 +14,8 @@
       "Bash(git commit *)",
       "Bash(git branch*)",
       "Bash(git checkout *)",
-      "Bash(git stash*)"
+      "Bash(git stash*)",
+      "Bash(chmod +x .claude/hooks/*.sh)"
     ],
     "deny": [
       "Bash(rm -rf *)",
@@ -37,5 +38,40 @@
       "Bash(mv *)"
     ],
     "defaultMode": "acceptEdits"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-tool-use-security.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/post-tool-use.sh"
+          }
+        ]
+      }
+    ],
+    "PreCommit": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-commit.sh"
+          }
+        ]
+      }
+    ]
   }
 }
