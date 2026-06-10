@@ -49,6 +49,15 @@
             "command": "bash .claude/hooks/pre-tool-use-security.sh"
           }
         ]
+      },
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-commit.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -58,17 +67,6 @@
           {
             "type": "command",
             "command": "bash .claude/hooks/post-tool-use.sh"
-          }
-        ]
-      }
-    ],
-    "PreCommit": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash .claude/hooks/pre-commit.sh"
           }
         ]
       }
