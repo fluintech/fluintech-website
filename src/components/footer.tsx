@@ -1,4 +1,4 @@
-import { Youtube, Instagram, Facebook } from "lucide-react"
+import { Youtube, Instagram, Facebook, Zap } from "lucide-react"
 
 export function Footer() {
   return (
@@ -11,10 +11,10 @@ export function Footer() {
           <div className="flex items-center gap-2.5">
             <div
               className="w-6 h-6 rounded-md flex items-center justify-center"
-              style={{ background: "var(--brand)" }}
+              style={{ background: "var(--brand-subtle)", border: "1px solid var(--brand-border)" }}
               aria-hidden="true"
             >
-              <div className="w-3 h-3 rounded-sm" style={{ background: "var(--surface)" }} />
+              <Zap className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
             </div>
             <span className="font-medium" style={{ color: "var(--text-primary)" }}>
               Fluintech

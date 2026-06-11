@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, type ReactNode } from "react"
 import { Footer } from "@/components/footer"
 import {
   Menu,
@@ -15,24 +15,72 @@ import {
   FileText,
   Wrench,
   GraduationCap,
+  Shield,
+  GitBranch,
+  Cpu,
+  Layers,
+  BookOpen,
+  Terminal,
+  UserCheck,
+  Gauge,
 } from "lucide-react"
 
 const WHATSAPP_URL =
   "https://wa.me/554431010224?text=Ol%C3%A1!+Quero+entender+como+a+Fluintech+pode+ajudar+minha+empresa."
 
-const FEED_EVENTS = [
-  "Lead recebido via WhatsApp",
-  "Consultando base de clientes...",
-  "Nenhum registro encontrado",
-  "Criando contato no CRM",
-  "Notificando equipe comercial",
-  "Agendando follow-up para amanhã",
-  "Resposta enviada ao cliente ✓",
-  "Nova mensagem recebida",
-  "Identificando intenção da mensagem...",
-  "Encaminhando para suporte técnico",
-  "Ticket #4821 criado automaticamente",
-  "Confirmação enviada ao cliente ✓",
+const MARQUEE_TERMS = [
+  "Tools",
+  "MCPs",
+  "Skills",
+  "Rules",
+  "Prompt Engineering",
+  "Context Engineering",
+  "Spec-Driven Development",
+  "Harness Engineering",
+  "Human in the Loop",
+  "Mission Control",
+  "Evals",
+  "Guardrails",
+]
+
+type FeedEvent = { text: string; kind: "info" | "ok" | "human" | "sec" }
+
+const MISSION_FEEDS: Record<string, FeedEvent[]> = {
+  "qualificacao-leads": [
+    { text: "Lead recebido via WhatsApp", kind: "info" },
+    { text: "Consultando CRM via MCP...", kind: "info" },
+    { text: "Contato criado e enriquecido", kind: "ok" },
+    { text: "Guardrail: dados sensíveis mascarados", kind: "sec" },
+    { text: "Score de intenção calculado", kind: "info" },
+    { text: "Encaminhado ao comercial ✓", kind: "ok" },
+  ],
+  "suporte-tecnico": [
+    { text: "Ticket aberto automaticamente", kind: "info" },
+    { text: "Buscando contexto na base de conhecimento...", kind: "info" },
+    { text: "Solução proposta ao cliente", kind: "info" },
+    { text: "Aprovação humana solicitada", kind: "human" },
+    { text: "Humano aprovou · executando", kind: "human" },
+    { text: "Ticket resolvido e registrado ✓", kind: "ok" },
+  ],
+  "operacao-agenda": [
+    { text: "Solicitação de agendamento recebida", kind: "info" },
+    { text: "Verificando disponibilidade no calendário...", kind: "info" },
+    { text: "Conflito detectado · propondo alternativa", kind: "info" },
+    { text: "Cliente confirmou novo horário", kind: "ok" },
+    { text: "Auditoria: ação registrada no log", kind: "sec" },
+    { text: "Lembrete programado ✓", kind: "ok" },
+  ],
+}
+
+const STACK_ITEMS = [
+  { icon: Wrench, label: "Tools" },
+  { icon: GitBranch, label: "MCPs" },
+  { icon: Layers, label: "Skills" },
+  { icon: BookOpen, label: "Rules" },
+  { icon: Terminal, label: "Prompt Eng." },
+  { icon: Cpu, label: "Context Eng." },
+  { icon: FileText, label: "SDD" },
+  { icon: Gauge, label: "Harness" },
 ]
 
 function WhatsAppIcon() {
@@ -43,76 +91,396 @@ function WhatsAppIcon() {
   )
 }
 
-function AgentFeed() {
-  const [events, setEvents] = useState<{ time: string; text: string }[]>([])
+function Reveal({
+  children,
+  delay = 0,
+  className = "",
+}: {
+  children: ReactNode
+  delay?: number
+  className?: string
+}) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("revealed")
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.15 },
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref} className={`reveal ${className}`} style={{ transitionDelay: `${delay}ms` }}>
+      {children}
+    </div>
+  )
+}
+
+const SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#$%&"
+
+function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
+  const [display, setDisplay] = useState("")
+  const [done, setDone] = useState(false)
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setDisplay(text)
+      setDone(true)
+      return
+    }
+
+    let frame = 0
+    let rafId: number
+    const totalFrames = 40
+
+    const start = () => {
+      const tick = () => {
+        frame++
+        const progress = frame / totalFrames
+        const settled = Math.floor(text.length * progress)
+        let out = text.slice(0, settled)
+        for (let i = settled; i < text.length; i++) {
+          out += text[i] === " " ? " " : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]
+        }
+        setDisplay(out)
+        if (frame < totalFrames) {
+          rafId = requestAnimationFrame(tick)
+        } else {
+          setDisplay(text)
+          setDone(true)
+        }
+      }
+      rafId = requestAnimationFrame(tick)
+    }
+
+    const timeoutId = setTimeout(start, delay)
+    return () => {
+      clearTimeout(timeoutId)
+      cancelAnimationFrame(rafId)
+    }
+  }, [text, delay])
+
+  return (
+    <span aria-label={text} style={done ? undefined : { color: "var(--text-primary)" }}>
+      {display || " "}
+    </span>
+  )
+}
+
+function NeuralCanvas() {
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return
+
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    let rafId: number
+    let width = 0
+    let height = 0
+
+    const resize = () => {
+      const rect = canvas.getBoundingClientRect()
+      width = rect.width
+      height = rect.height
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      canvas.width = width * dpr
+      canvas.height = height * dpr
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+    }
+    resize()
+    window.addEventListener("resize", resize)
+
+    const COUNT = width < 640 ? 28 : 52
+    const nodes = Array.from({ length: COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+      r: 1 + Math.random() * 1.5,
+    }))
+
+    const LINK_DIST = 130
+
+    const draw = () => {
+      ctx.clearRect(0, 0, width, height)
+
+      for (const n of nodes) {
+        n.x += n.vx
+        n.y += n.vy
+        if (n.x < 0 || n.x > width) n.vx *= -1
+        if (n.y < 0 || n.y > height) n.vy *= -1
+      }
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const a = nodes[i]
+          const b = nodes[j]
+          const dx = a.x - b.x
+          const dy = a.y - b.y
+          const dist = Math.hypot(dx, dy)
+          if (dist < LINK_DIST) {
+            const alpha = (1 - dist / LINK_DIST) * 0.22
+            ctx.strokeStyle = `rgba(0, 217, 146, ${alpha})`
+            ctx.lineWidth = 0.6
+            ctx.beginPath()
+            ctx.moveTo(a.x, a.y)
+            ctx.lineTo(b.x, b.y)
+            ctx.stroke()
+          }
+        }
+      }
+
+      for (const n of nodes) {
+        ctx.fillStyle = "rgba(0, 217, 146, 0.55)"
+        ctx.beginPath()
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2)
+        ctx.fill()
+      }
+
+      rafId = requestAnimationFrame(draw)
+    }
+    rafId = requestAnimationFrame(draw)
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      window.removeEventListener("resize", resize)
+    }
+  }, [])
+
+  return (
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full pointer-events-none"
+      aria-hidden="true"
+      style={{
+        maskImage: "radial-gradient(ellipse 90% 80% at 50% 20%, black 30%, transparent 75%)",
+        WebkitMaskImage: "radial-gradient(ellipse 90% 80% at 50% 20%, black 30%, transparent 75%)",
+      }}
+    />
+  )
+}
+
+function eventColor(kind: FeedEvent["kind"]) {
+  switch (kind) {
+    case "ok":
+      return "var(--brand)"
+    case "human":
+      return "var(--signal-amber)"
+    case "sec":
+      return "var(--text-muted)"
+    default:
+      return "var(--text-secondary)"
+  }
+}
+
+function MissionControl() {
+  const agents = Object.keys(MISSION_FEEDS)
+  const [active, setActive] = useState(agents[0])
+  const [lines, setLines] = useState<{ time: string; ev: FeedEvent }[]>([])
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     let idx = 0
     let timeoutId: ReturnType<typeof setTimeout>
+    const feed = MISSION_FEEDS[active]
+    setLines([])
 
-    const addEvent = () => {
+    const addLine = () => {
       const now = new Date()
-      const time = `${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}`
-      setEvents((prev) => [...prev.slice(-7), { time, text: FEED_EVENTS[idx] }])
-      idx = (idx + 1) % FEED_EVENTS.length
-      timeoutId = setTimeout(addEvent, 800 + Math.random() * 700)
+      const time = `${now.getHours().toString().padStart(2, "0")}:${now
+        .getMinutes()
+        .toString()
+        .padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")}`
+      setLines((prev) => [...prev.slice(-6), { time, ev: feed[idx] }])
+      idx = (idx + 1) % feed.length
+      timeoutId = setTimeout(addLine, 900 + Math.random() * 900)
     }
 
-    timeoutId = setTimeout(addEvent, 400)
+    timeoutId = setTimeout(addLine, 300)
     return () => clearTimeout(timeoutId)
-  }, [])
+  }, [active])
 
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight
     }
-  }, [events])
+  }, [lines])
 
   return (
     <div
-      className="rounded-xl overflow-hidden"
-      style={{ border: "0.5px solid var(--surface-border)", background: "var(--surface-card)" }}
+      className="relative rounded-lg overflow-hidden beam-edge scanline-overlay"
+      style={{
+        border: "1px solid var(--surface-border)",
+        background: "var(--surface-card)",
+        boxShadow: "0 32px 80px -40px var(--brand-glow)",
+      }}
     >
       <div
-        className="flex items-center gap-2 px-4 py-3"
-        style={{ borderBottom: "0.5px solid var(--surface-border)" }}
+        className="flex items-center gap-1 px-3 py-2 overflow-x-auto"
+        style={{ borderBottom: "1px solid var(--surface-border)" }}
       >
-        <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full" style={{ background: "var(--surface-border)" }} />
-          <div className="w-2.5 h-2.5 rounded-full" style={{ background: "var(--surface-border)" }} />
-          <div className="w-2.5 h-2.5 rounded-full" style={{ background: "var(--surface-border)" }} />
-        </div>
-        <span className="ml-2 font-mono text-xs" style={{ color: "var(--text-muted)" }}>
-          agente / qualificacao-leads
+        <span className="font-mono text-[11px] uppercase tracking-widest mr-2 shrink-0" style={{ color: "var(--text-muted)" }}>
+          missão
         </span>
-        <div className="ml-auto flex items-center gap-1.5">
-          <span
-            className="inline-block w-1.5 h-1.5 rounded-full animate-pulse"
-            style={{ background: "var(--brand)" }}
-          />
-          <span className="text-xs" style={{ color: "var(--brand)" }}>
-            rodando
+        {agents.map((a) => (
+          <button
+            key={a}
+            onClick={() => setActive(a)}
+            className="font-mono text-xs px-2.5 py-1 rounded transition-colors duration-150 shrink-0"
+            style={
+              active === a
+                ? { background: "var(--brand-subtle)", color: "var(--brand)", border: "1px solid var(--brand-border)" }
+                : { color: "var(--text-muted)", border: "1px solid transparent" }
+            }
+          >
+            {a}
+          </button>
+        ))}
+        <div className="ml-auto flex items-center gap-1.5 shrink-0 pl-2">
+          <span className="relative inline-flex w-2 h-2 rounded-full pulse-ring" style={{ background: "var(--brand)" }} />
+          <span className="font-mono text-xs" style={{ color: "var(--brand)" }}>
+            live
           </span>
         </div>
       </div>
 
-      <div ref={containerRef} className="h-52 overflow-hidden p-4 space-y-2.5">
-        {events.map((ev, i) => (
-          <div key={i} className="flex gap-3 text-sm font-mono animate-fade-in">
+      <div ref={containerRef} className="h-56 overflow-hidden p-4 space-y-2.5 font-mono text-[13px]">
+        {lines.map((l, i) => (
+          <div key={`${active}-${i}`} className="flex gap-3 animate-fade-in items-baseline">
             <span className="shrink-0" style={{ color: "var(--text-muted)" }}>
-              {ev.time}
+              {l.time}
             </span>
-            <span style={{ color: "var(--text-secondary)" }}>{ev.text}</span>
+            {l.ev.kind === "human" && (
+              <UserCheck className="w-3.5 h-3.5 shrink-0 self-center" style={{ color: "var(--signal-amber)" }} />
+            )}
+            {l.ev.kind === "sec" && (
+              <Shield className="w-3.5 h-3.5 shrink-0 self-center" style={{ color: "var(--text-muted)" }} />
+            )}
+            <span style={{ color: eventColor(l.ev.kind) }}>{l.ev.text}</span>
           </div>
         ))}
-        <div className="flex gap-3 text-sm font-mono">
-          <span className="shrink-0 opacity-0">00:00</span>
-          <span
-            className="inline-block w-2 h-4 animate-pulse"
-            style={{ background: "var(--brand)", opacity: 0.7 }}
-          />
+        <div className="flex gap-3">
+          <span className="shrink-0 opacity-0">00:00:00</span>
+          <span className="inline-block w-2 h-4 animate-caret" style={{ background: "var(--brand)" }} />
         </div>
+      </div>
+
+      <div
+        className="flex items-center justify-between px-4 py-2 font-mono text-[11px]"
+        style={{ borderTop: "1px solid var(--surface-border)", color: "var(--text-muted)" }}
+      >
+        <span>guardrails ativos</span>
+        <span className="flex items-center gap-1.5">
+          <UserCheck className="w-3 h-3" style={{ color: "var(--signal-amber)" }} />
+          human in the loop
+        </span>
+        <span>auditoria completa</span>
+      </div>
+    </div>
+  )
+}
+
+function StackOrbit() {
+  return (
+    <div className="relative w-full max-w-md mx-auto aspect-square">
+      <div
+        className="absolute inset-[12%] rounded-full"
+        style={{ border: "1px dashed var(--surface-border)" }}
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-[30%] rounded-full"
+        style={{ border: "1px dashed var(--surface-border)" }}
+        aria-hidden="true"
+      />
+
+      <div className="absolute inset-0 animate-orbit">
+        {STACK_ITEMS.map((item, i) => {
+          const angle = (i / STACK_ITEMS.length) * 360
+          const Icon = item.icon
+          return (
+            <div
+              key={item.label}
+              className="absolute top-1/2 left-1/2"
+              style={{ transform: `rotate(${angle}deg) translateY(-44%)` }}
+            >
+              <div className="animate-orbit-counter" style={{ transform: `rotate(-${angle}deg)` }}>
+                <div
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md -translate-x-1/2 whitespace-nowrap"
+                  style={{
+                    background: "var(--surface-card)",
+                    border: "1px solid var(--surface-border)",
+                  }}
+                >
+                  <Icon className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
+                  <span className="font-mono text-xs" style={{ color: "var(--text-secondary)" }}>
+                    {item.label}
+                  </span>
+                </div>
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div
+          className="relative w-24 h-24 rounded-2xl flex flex-col items-center justify-center gap-1 pulse-ring"
+          style={{
+            background: "var(--surface-card)",
+            border: "1px solid var(--brand-border)",
+            boxShadow: "0 0 48px -8px var(--brand-glow)",
+          }}
+        >
+          <Zap className="w-6 h-6" style={{ color: "var(--brand)" }} />
+          <span className="font-mono text-[11px] uppercase tracking-widest" style={{ color: "var(--brand)" }}>
+            agente
+          </span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function Marquee() {
+  const items = [...MARQUEE_TERMS, ...MARQUEE_TERMS]
+  return (
+    <div
+      className="relative overflow-hidden py-4"
+      style={{
+        borderTop: "1px solid var(--surface-border)",
+        borderBottom: "1px solid var(--surface-border)",
+      }}
+      aria-hidden="true"
+    >
+      <div
+        className="absolute inset-y-0 left-0 w-24 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(90deg, var(--surface), transparent)" }}
+      />
+      <div
+        className="absolute inset-y-0 right-0 w-24 z-10 pointer-events-none"
+        style={{ background: "linear-gradient(270deg, var(--surface), transparent)" }}
+      />
+      <div className="flex w-max animate-marquee gap-10">
+        {items.map((term, i) => (
+          <span key={i} className="flex items-center gap-10 font-mono text-sm" style={{ color: "var(--text-muted)" }}>
+            {term}
+            <span style={{ color: "var(--brand)" }}>·</span>
+          </span>
+        ))}
       </div>
     </div>
   )
@@ -134,19 +502,19 @@ export default function FluintechHome() {
       <header
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-150"
         style={{
-          borderBottom: scrolled ? "0.5px solid var(--surface-border)" : "0.5px solid transparent",
+          borderBottom: scrolled ? "1px solid var(--surface-border)" : "1px solid transparent",
           backdropFilter: scrolled ? "blur(12px)" : "none",
-          background: scrolled ? "color-mix(in srgb, var(--surface) 90%, transparent)" : "transparent",
+          background: scrolled ? "color-mix(in srgb, var(--surface) 88%, transparent)" : "transparent",
         }}
       >
         <nav className="max-w-6xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5">
             <div
-              className="w-6 h-6 rounded-md flex items-center justify-center"
-              style={{ background: "var(--brand)" }}
+              className="relative w-6 h-6 rounded-md flex items-center justify-center pulse-ring"
+              style={{ background: "var(--brand-subtle)", border: "1px solid var(--brand-border)" }}
               aria-hidden="true"
             >
-              <div className="w-3 h-3 rounded-sm" style={{ background: "var(--surface)" }} />
+              <Zap className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
             </div>
             <span className="font-medium" style={{ color: "var(--text-primary)" }}>
               Fluintech
@@ -154,6 +522,13 @@ export default function FluintechHome() {
           </a>
 
           <div className="hidden md:flex items-center gap-8">
+            <a
+              href="#engenharia"
+              className="text-sm transition-colors duration-150 hover:text-[--text-primary]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Engenharia
+            </a>
             <a
               href="#como-funciona"
               className="text-sm transition-colors duration-150 hover:text-[--text-primary]"
@@ -168,22 +543,13 @@ export default function FluintechHome() {
             >
               Para quem
             </a>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm transition-colors duration-150 hover:text-[--text-primary]"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              Contato
-            </a>
           </div>
 
           <a
             href={WHATSAPP_URL}
             target="_blank"
             rel="noopener noreferrer"
-            className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-opacity duration-150 hover:opacity-90"
+            className="hidden md:inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all duration-150 hover:opacity-90 hover:scale-[1.03]"
             style={{ background: "var(--brand)", color: "var(--surface)" }}
           >
             <MessageCircle className="w-4 h-4" />
@@ -201,8 +567,16 @@ export default function FluintechHome() {
         </nav>
 
         {menuOpen && (
-          <div style={{ borderTop: "0.5px solid var(--surface-border)", background: "var(--surface-card)" }}>
+          <div style={{ borderTop: "1px solid var(--surface-border)", background: "var(--surface-card)" }}>
             <div className="max-w-6xl mx-auto px-4 py-4 flex flex-col gap-4">
+              <a
+                href="#engenharia"
+                className="text-sm"
+                style={{ color: "var(--text-secondary)" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                Engenharia
+              </a>
               <a
                 href="#como-funciona"
                 className="text-sm"
@@ -237,130 +611,156 @@ export default function FluintechHome() {
 
       <main>
         {/* Hero */}
-        <section className="max-w-6xl mx-auto px-4 lg:px-8 pt-32 pb-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <div
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
-                style={{
-                  border: "0.5px solid var(--brand-border)",
-                  background: "var(--brand-subtle)",
-                }}
-              >
-                <span
-                  className="w-1.5 h-1.5 rounded-full animate-pulse"
-                  style={{ background: "var(--brand)" }}
-                />
-                <span className="text-xs font-medium" style={{ color: "var(--brand)" }}>
-                  Agentes de IA para operações reais
-                </span>
-              </div>
-
-              <h1
-                className="text-4xl md:text-5xl font-medium tracking-tight leading-tight mb-4"
-                style={{ color: "var(--text-primary)" }}
-              >
-                Sua operação, comandada por agentes que agem.
-              </h1>
-
-              <p className="text-lg leading-relaxed mb-8" style={{ color: "var(--text-secondary)" }}>
-                Implementamos agentes de IA que executam o trabalho pesado para que sua equipe foque no que
-                realmente importa.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href={WHATSAPP_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-opacity duration-150 hover:opacity-90"
-                  style={{ background: "var(--brand)", color: "var(--surface)" }}
-                >
-                  <WhatsAppIcon />
-                  Falar com a Lia
-                </a>
-                <a
-                  href="#como-funciona"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-colors duration-150"
-                  style={{
-                    border: "0.5px solid var(--surface-border)",
-                    color: "var(--text-secondary)",
-                  }}
-                >
-                  Ver como funciona
-                  <ArrowRight className="w-4 h-4" />
-                </a>
-              </div>
-            </div>
-
-            <AgentFeed />
-          </div>
-
-          {/* 4-step flow */}
-          <div
-            className="mt-16 rounded-xl overflow-hidden"
-            style={{ border: "0.5px solid var(--surface-border)", background: "var(--surface-card)" }}
-          >
-            <div className="grid grid-cols-2 lg:grid-cols-4">
-              {[
-                { icon: Search, label: "Diagnóstico" },
-                { icon: FileText, label: "Especificação" },
-                { icon: Wrench, label: "Produção", highlight: true },
-                { icon: GraduationCap, label: "Autonomia" },
-              ].map((step, i) => {
-                const Icon = step.icon
-                return (
+        <section className="relative">
+          <NeuralCanvas />
+          <div className="relative max-w-6xl mx-auto px-4 lg:px-8 pt-32 pb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <Reveal>
                   <div
-                    key={i}
-                    className="flex flex-col items-center gap-2 p-5 relative"
-                    style={
-                      step.highlight
-                        ? {
-                            background: "var(--brand-subtle)",
-                            borderLeft: "0.5px solid var(--brand-border)",
-                            borderRight: "0.5px solid var(--brand-border)",
-                          }
-                        : i > 0
-                        ? { borderLeft: "0.5px solid var(--surface-border)" }
-                        : {}
-                    }
+                    className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-6"
+                    style={{
+                      border: "1px solid var(--brand-border)",
+                      background: "var(--brand-subtle)",
+                    }}
                   >
-                    <Icon
-                      className="w-4 h-4"
-                      style={{ color: step.highlight ? "var(--brand)" : "var(--text-muted)" }}
-                    />
-                    <span
-                      className="text-sm font-medium"
-                      style={{ color: step.highlight ? "var(--brand)" : "var(--text-secondary)" }}
-                    >
-                      {step.label}
+                    <span className="relative w-1.5 h-1.5 rounded-full pulse-ring" style={{ background: "var(--brand)" }} />
+                    <span className="font-mono text-xs uppercase tracking-widest" style={{ color: "var(--brand)" }}>
+                      Agentes de IA para operações reais
                     </span>
                   </div>
-                )
-              })}
+                </Reveal>
+
+                <h1
+                  className="text-4xl md:text-5xl font-medium tracking-tight leading-tight mb-4"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  <ScrambleText text="Sua operação, comandada" delay={200} />
+                  <br />
+                  <span style={{ color: "var(--brand)" }}>
+                    <ScrambleText text="por agentes que agem." delay={900} />
+                  </span>
+                </h1>
+
+                <Reveal delay={300}>
+                  <p className="text-lg leading-relaxed mb-8" style={{ color: "var(--text-secondary)" }}>
+                    Implementamos agentes de IA que executam o trabalho pesado para que sua equipe foque no
+                    que realmente importa. Com engenharia de verdade por trás: specs, guardrails e você no
+                    controle.
+                  </p>
+                </Reveal>
+
+                <Reveal delay={400}>
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <a
+                      href={WHATSAPP_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-all duration-150 hover:opacity-90 hover:scale-[1.03]"
+                      style={{
+                        background: "var(--brand)",
+                        color: "var(--surface)",
+                        boxShadow: "0 8px 32px -12px var(--brand-glow)",
+                      }}
+                    >
+                      <WhatsAppIcon />
+                      Falar com a Lia
+                    </a>
+                    <a
+                      href="#como-funciona"
+                      className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-md text-sm font-medium transition-colors duration-150 hover:border-[--brand-border]"
+                      style={{
+                        border: "1px solid var(--surface-border)",
+                        color: "var(--text-secondary)",
+                      }}
+                    >
+                      Ver como funciona
+                      <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
+                </Reveal>
+              </div>
+
+              <Reveal delay={350}>
+                <MissionControl />
+              </Reveal>
+            </div>
+          </div>
+        </section>
+
+        <Marquee />
+
+        {/* Engenharia */}
+        <section id="engenharia">
+          <div className="max-w-6xl mx-auto px-4 lg:px-8 py-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              <Reveal>
+                <p
+                  className="font-mono text-xs font-medium uppercase tracking-widest mb-4"
+                  style={{ color: "var(--brand)" }}
+                >
+                  A engenharia
+                </p>
+                <h2
+                  className="text-3xl font-medium tracking-tight mb-3"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  Agente sem engenharia é só um chatbot caro.
+                </h2>
+                <p className="mb-8 leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+                  Cada agente que entregamos opera dentro de uma arquitetura completa: ferramentas
+                  conectadas via MCP, skills especializadas, regras de negócio explícitas e specs aprovadas
+                  antes de qualquer linha de código. Prompt e contexto são disciplinas de engenharia aqui,
+                  não tentativa e erro.
+                </p>
+                <ul className="space-y-3">
+                  {[
+                    { icon: Shield, text: "Guardrails e auditoria em cada ação executada" },
+                    { icon: UserCheck, text: "Human in the loop: decisões críticas passam por você" },
+                    { icon: FileText, text: "Spec-Driven Development: o acordado é o construído" },
+                    { icon: Gauge, text: "Evals contínuos de qualidade e performance" },
+                  ].map((item, i) => {
+                    const Icon = item.icon
+                    return (
+                      <li key={i} className="flex items-center gap-3">
+                        <Icon className="w-4 h-4 shrink-0" style={{ color: "var(--brand)" }} />
+                        <span className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                          {item.text}
+                        </span>
+                      </li>
+                    )
+                  })}
+                </ul>
+              </Reveal>
+
+              <Reveal delay={200}>
+                <StackOrbit />
+              </Reveal>
             </div>
           </div>
         </section>
 
         {/* Problema */}
-        <section style={{ borderTop: "0.5px solid var(--surface-border)" }}>
+        <section style={{ borderTop: "1px solid var(--surface-border)" }}>
           <div className="max-w-6xl mx-auto px-4 lg:px-8 py-20">
-            <p
-              className="text-xs font-medium uppercase tracking-widest mb-4"
-              style={{ color: "var(--brand)" }}
-            >
-              O problema
-            </p>
-            <h2
-              className="text-3xl font-medium tracking-tight mb-3"
-              style={{ color: "var(--text-primary)" }}
-            >
-              A maioria das empresas tenta adotar IA e falha.
-            </h2>
-            <p className="max-w-2xl mb-12" style={{ color: "var(--text-secondary)" }}>
-              Não por falta de tecnologia. Por falta de método. Automatizar o processo errado é pior do que
-              não automatizar nada.
-            </p>
+            <Reveal>
+              <p
+                className="font-mono text-xs font-medium uppercase tracking-widest mb-4"
+                style={{ color: "var(--brand)" }}
+              >
+                O problema
+              </p>
+              <h2
+                className="text-3xl font-medium tracking-tight mb-3"
+                style={{ color: "var(--text-primary)" }}
+              >
+                A maioria das empresas tenta adotar IA e falha.
+              </h2>
+              <p className="max-w-2xl mb-12" style={{ color: "var(--text-secondary)" }}>
+                Não por falta de tecnologia. Por falta de método. Automatizar o processo errado é pior do
+                que não automatizar nada.
+              </p>
+            </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
@@ -380,51 +780,57 @@ export default function FluintechHome() {
                   desc: "Transferimos o controle após a entrega.",
                 },
               ].map((card, i) => (
-                <div
-                  key={i}
-                  className="rounded-xl overflow-hidden"
-                  style={{ border: "0.5px solid var(--surface-border)", background: "var(--surface-card)" }}
-                >
+                <Reveal key={i} delay={i * 120}>
                   <div
-                    className="px-5 py-4"
-                    style={{ borderBottom: "0.5px solid var(--surface-border)" }}
+                    className="rounded-lg overflow-hidden card-interactive h-full"
+                    style={{
+                      border: "1px solid var(--surface-border)",
+                      background: "var(--surface-card)",
+                    }}
                   >
-                    <p className="text-sm" style={{ color: "#f87171" }}>
-                      {card.problem}
-                    </p>
+                    <div className="px-5 py-4" style={{ borderBottom: "1px solid var(--surface-border)" }}>
+                      <p
+                        className="font-mono text-sm line-through decoration-1"
+                        style={{ color: "var(--signal-red)" }}
+                      >
+                        {card.problem}
+                      </p>
+                    </div>
+                    <div className="px-5 py-4">
+                      <p className="text-sm font-medium mb-2" style={{ color: "var(--brand)" }}>
+                        {card.solution}
+                      </p>
+                      <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                        {card.desc}
+                      </p>
+                    </div>
                   </div>
-                  <div className="px-5 py-4">
-                    <p className="text-sm font-medium mb-2" style={{ color: "var(--brand)" }}>
-                      {card.solution}
-                    </p>
-                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                      {card.desc}
-                    </p>
-                  </div>
-                </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
         {/* Agentes */}
-        <section id="como-funciona" style={{ borderTop: "0.5px solid var(--surface-border)" }}>
+        <section id="como-funciona" style={{ borderTop: "1px solid var(--surface-border)" }}>
           <div className="max-w-6xl mx-auto px-4 lg:px-8 py-20">
-            <p
-              className="text-xs font-medium uppercase tracking-widest mb-4"
-              style={{ color: "var(--brand)" }}
-            >
-              O que entregamos
-            </p>
-            <h2
-              className="text-3xl font-medium tracking-tight mb-3"
-              style={{ color: "var(--text-primary)" }}
-            >
-              Agentes que agem de verdade.
-            </h2>
-            <p className="mb-12" style={{ color: "var(--text-secondary)" }}>
-              Não entregamos bots de resposta automática.
-            </p>
+            <Reveal>
+              <p
+                className="font-mono text-xs font-medium uppercase tracking-widest mb-4"
+                style={{ color: "var(--brand)" }}
+              >
+                O que entregamos
+              </p>
+              <h2
+                className="text-3xl font-medium tracking-tight mb-3"
+                style={{ color: "var(--text-primary)" }}
+              >
+                Agentes que agem de verdade.
+              </h2>
+              <p className="mb-12" style={{ color: "var(--text-secondary)" }}>
+                Não entregamos bots de resposta automática.
+              </p>
+            </Reveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
@@ -451,27 +857,31 @@ export default function FluintechHome() {
               ].map((card, i) => {
                 const Icon = card.icon
                 return (
-                  <div
-                    key={i}
-                    className="rounded-xl p-5"
-                    style={{ border: "0.5px solid var(--surface-border)", background: "var(--surface-card)" }}
-                  >
+                  <Reveal key={i} delay={(i % 2) * 120}>
                     <div
-                      className="w-8 h-8 rounded-md flex items-center justify-center mb-4"
+                      className="rounded-lg p-5 card-interactive h-full"
                       style={{
-                        background: "var(--brand-subtle)",
-                        border: "0.5px solid var(--brand-border)",
+                        border: "1px solid var(--surface-border)",
+                        background: "var(--surface-card)",
                       }}
                     >
-                      <Icon className="w-4 h-4" style={{ color: "var(--brand)" }} />
+                      <div
+                        className="w-8 h-8 rounded-md flex items-center justify-center mb-4"
+                        style={{
+                          background: "var(--brand-subtle)",
+                          border: "1px solid var(--brand-border)",
+                        }}
+                      >
+                        <Icon className="w-4 h-4" style={{ color: "var(--brand)" }} />
+                      </div>
+                      <h3 className="font-medium mb-1.5" style={{ color: "var(--text-primary)" }}>
+                        {card.title}
+                      </h3>
+                      <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                        {card.desc}
+                      </p>
                     </div>
-                    <h3 className="font-medium mb-1.5" style={{ color: "var(--text-primary)" }}>
-                      {card.title}
-                    </h3>
-                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                      {card.desc}
-                    </p>
-                  </div>
+                  </Reveal>
                 )
               })}
             </div>
@@ -479,90 +889,103 @@ export default function FluintechHome() {
         </section>
 
         {/* Método */}
-        <section style={{ borderTop: "0.5px solid var(--surface-border)" }}>
+        <section style={{ borderTop: "1px solid var(--surface-border)" }}>
           <div className="max-w-6xl mx-auto px-4 lg:px-8 py-20">
-            <p
-              className="text-xs font-medium uppercase tracking-widest mb-4"
-              style={{ color: "var(--brand)" }}
-            >
-              O método
-            </p>
-            <h2
-              className="text-3xl font-medium tracking-tight mb-3"
-              style={{ color: "var(--text-primary)" }}
-            >
-              Do diagnóstico ao primeiro agente em 30 dias.
-            </h2>
-            <p className="mb-12" style={{ color: "var(--text-secondary)" }}>
-              Um processo claro do início ao fim. Sem surpresas.
-            </p>
+            <Reveal>
+              <p
+                className="font-mono text-xs font-medium uppercase tracking-widest mb-4"
+                style={{ color: "var(--brand)" }}
+              >
+                O método
+              </p>
+              <h2
+                className="text-3xl font-medium tracking-tight mb-3"
+                style={{ color: "var(--text-primary)" }}
+              >
+                Do diagnóstico ao primeiro agente em 30 dias.
+              </h2>
+              <p className="mb-12" style={{ color: "var(--text-secondary)" }}>
+                Um processo claro do início ao fim. Sem surpresas.
+              </p>
+            </Reveal>
 
-            <div
-              className="rounded-xl overflow-hidden"
-              style={{ border: "0.5px solid var(--surface-border)", background: "var(--surface-card)" }}
-            >
-              <div className="grid grid-cols-1 md:grid-cols-4">
-                {[
-                  {
-                    n: "01",
-                    title: "Diagnóstico",
-                    desc: "Mapeamos onde está o gargalo real e o que pode ser delegado a um agente.",
-                  },
-                  {
-                    n: "02",
-                    title: "Especificação",
-                    desc: "Cada agente tem um documento aprovado por você antes de qualquer implementação.",
-                  },
-                  {
-                    n: "03",
-                    title: "Produção",
-                    desc: "Primeiros resultados mensuráveis em semanas, não em meses.",
-                  },
-                  {
-                    n: "04",
-                    title: "Autonomia",
-                    desc: "Sua equipe aprende a monitorar, ajustar e evoluir. Sem dependência técnica.",
-                  },
-                ].map((step, i) => (
-                  <div
-                    key={step.n}
-                    className={`p-6${i > 0 ? " border-t md:border-t-0 md:border-l" : ""}`}
-                    style={{ borderColor: "var(--surface-border)" }}
-                  >
-                    <p className="text-2xl font-medium mb-3" style={{ color: "var(--brand)" }}>
-                      {step.n}
-                    </p>
-                    <h3 className="font-medium mb-2" style={{ color: "var(--text-primary)" }}>
-                      {step.title}
-                    </h3>
-                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                      {step.desc}
-                    </p>
-                  </div>
-                ))}
+            <Reveal delay={150}>
+              <div
+                className="rounded-lg overflow-hidden"
+                style={{ border: "1px solid var(--surface-border)", background: "var(--surface-card)" }}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-4">
+                  {[
+                    {
+                      n: "01",
+                      icon: Search,
+                      title: "Diagnóstico",
+                      desc: "Mapeamos onde está o gargalo real e o que pode ser delegado a um agente.",
+                    },
+                    {
+                      n: "02",
+                      icon: FileText,
+                      title: "Especificação",
+                      desc: "Cada agente tem um documento aprovado por você antes de qualquer implementação.",
+                    },
+                    {
+                      n: "03",
+                      icon: Wrench,
+                      title: "Produção",
+                      desc: "Primeiros resultados mensuráveis em semanas, não em meses.",
+                    },
+                    {
+                      n: "04",
+                      icon: GraduationCap,
+                      title: "Autonomia",
+                      desc: "Sua equipe aprende a monitorar, ajustar e evoluir. Sem dependência técnica.",
+                    },
+                  ].map((step, i) => (
+                    <div
+                      key={step.n}
+                      className={`p-6 group transition-colors duration-300 hover:bg-[--brand-subtle]${i > 0 ? " border-t md:border-t-0 md:border-l" : ""}`}
+                      style={{ borderColor: "var(--surface-border)" }}
+                    >
+                      <p
+                        className="font-mono text-2xl font-medium mb-3 transition-transform duration-300 group-hover:-translate-y-1"
+                        style={{ color: "var(--brand)" }}
+                      >
+                        {step.n}
+                      </p>
+                      <h3 className="font-medium mb-2" style={{ color: "var(--text-primary)" }}>
+                        {step.title}
+                      </h3>
+                      <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                        {step.desc}
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            </Reveal>
           </div>
         </section>
 
         {/* Para quem */}
-        <section id="para-quem" style={{ borderTop: "0.5px solid var(--surface-border)" }}>
+        <section id="para-quem" style={{ borderTop: "1px solid var(--surface-border)" }}>
           <div className="max-w-6xl mx-auto px-4 lg:px-8 py-20">
-            <p
-              className="text-xs font-medium uppercase tracking-widest mb-4"
-              style={{ color: "var(--brand)" }}
-            >
-              Para quem
-            </p>
-            <h2
-              className="text-3xl font-medium tracking-tight mb-3"
-              style={{ color: "var(--text-primary)" }}
-            >
-              Para quem é a Fluintech.
-            </h2>
-            <p className="mb-12" style={{ color: "var(--text-secondary)" }}>
-              Não somos para todo mundo. Somos para quem quer resultado real.
-            </p>
+            <Reveal>
+              <p
+                className="font-mono text-xs font-medium uppercase tracking-widest mb-4"
+                style={{ color: "var(--brand)" }}
+              >
+                Para quem
+              </p>
+              <h2
+                className="text-3xl font-medium tracking-tight mb-3"
+                style={{ color: "var(--text-primary)" }}
+              >
+                Para quem é a Fluintech.
+              </h2>
+              <p className="mb-12" style={{ color: "var(--text-secondary)" }}>
+                Não somos para todo mundo. Somos para quem quer resultado real.
+              </p>
+            </Reveal>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {[
@@ -582,24 +1005,28 @@ export default function FluintechHome() {
                   desc: "Automações que quebraram, bots que não escalaram. A diferença está no método que vem antes.",
                 },
               ].map((card, i) => (
-                <div
-                  key={i}
-                  className="rounded-xl p-5"
-                  style={{ border: "0.5px solid var(--surface-border)", background: "var(--surface-card)" }}
-                >
-                  <h3 className="font-medium mb-2" style={{ color: "var(--text-primary)" }}>
-                    {card.title}
-                  </h3>
-                  <p
-                    className="text-xs font-medium uppercase tracking-widest mb-3"
-                    style={{ color: "var(--brand)" }}
+                <Reveal key={i} delay={i * 120}>
+                  <div
+                    className="rounded-lg p-5 card-interactive h-full"
+                    style={{
+                      border: "1px solid var(--surface-border)",
+                      background: "var(--surface-card)",
+                    }}
                   >
-                    {card.tag}
-                  </p>
-                  <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                    {card.desc}
-                  </p>
-                </div>
+                    <h3 className="font-medium mb-2" style={{ color: "var(--text-primary)" }}>
+                      {card.title}
+                    </h3>
+                    <p
+                      className="font-mono text-xs font-medium uppercase tracking-widest mb-3"
+                      style={{ color: "var(--brand)" }}
+                    >
+                      {card.tag}
+                    </p>
+                    <p className="text-sm" style={{ color: "var(--text-secondary)" }}>
+                      {card.desc}
+                    </p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
@@ -607,35 +1034,56 @@ export default function FluintechHome() {
 
         {/* CTA Final */}
         <section
+          className="relative overflow-hidden"
           style={{
-            borderTop: "0.5px solid var(--surface-border)",
+            borderTop: "1px solid var(--surface-border)",
             background: "var(--surface-card)",
           }}
         >
-          <div className="max-w-6xl mx-auto px-4 lg:px-8 py-20 text-center">
-            <h2
-              className="text-3xl md:text-4xl font-medium tracking-tight mb-4"
-              style={{ color: "var(--text-primary)" }}
-            >
-              30 minutos. Diagnóstico real.
-            </h2>
-            <p className="max-w-xl mx-auto mb-8" style={{ color: "var(--text-secondary)" }}>
-              Mapeamos os processos da sua operação e mostramos onde agentes geram mais impacto. Sem pitch
-              de venda. Sem compromisso.
-            </p>
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-opacity duration-150 hover:opacity-90"
-              style={{ background: "var(--brand)", color: "var(--surface)" }}
-            >
-              <MessageCircle className="w-4 h-4" />
-              Falar com a Lia no WhatsApp
-            </a>
-            <p className="mt-4 text-sm" style={{ color: "var(--text-muted)" }}>
-              Resposta em minutos · 24/7
-            </p>
+          <div
+            className="absolute left-1/2 -translate-x-1/2 -bottom-40 w-[640px] h-[320px] rounded-full pointer-events-none"
+            aria-hidden="true"
+            style={{
+              background: "radial-gradient(circle, var(--brand-glow) 0%, transparent 65%)",
+              filter: "blur(48px)",
+            }}
+          />
+          <div className="relative max-w-6xl mx-auto px-4 lg:px-8 py-20 text-center">
+            <Reveal>
+              <p
+                className="font-mono text-xs uppercase tracking-widest mb-4"
+                style={{ color: "var(--brand)" }}
+              >
+                Inicie a missão
+              </p>
+              <h2
+                className="text-3xl md:text-4xl font-medium tracking-tight mb-4"
+                style={{ color: "var(--text-primary)" }}
+              >
+                30 minutos. Diagnóstico real.
+              </h2>
+              <p className="max-w-xl mx-auto mb-8" style={{ color: "var(--text-secondary)" }}>
+                Mapeamos os processos da sua operação e mostramos onde agentes geram mais impacto. Sem
+                pitch de venda. Sem compromisso.
+              </p>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all duration-150 hover:opacity-90 hover:scale-[1.03]"
+                style={{
+                  background: "var(--brand)",
+                  color: "var(--surface)",
+                  boxShadow: "0 12px 40px -16px var(--brand-glow)",
+                }}
+              >
+                <MessageCircle className="w-4 h-4" />
+                Falar com a Lia no WhatsApp
+              </a>
+              <p className="mt-4 font-mono text-sm" style={{ color: "var(--text-muted)" }}>
+                Resposta em minutos · 24/7
+              </p>
+            </Reveal>
           </div>
         </section>
       </main>
