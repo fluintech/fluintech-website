@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { Zap, Rss } from "lucide-react"
+import { Zap } from "lucide-react"
 import { Footer } from "@/components/footer"
 import { BlogGrid } from "@/components/blog/blog-grid"
 import { getAllPosts } from "@/lib/blog"
@@ -52,23 +52,13 @@ export default async function BlogPage() {
               Fluintech
             </span>
           </Link>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/"
-              className="text-sm transition-colors duration-150 hover:text-[--text-primary]"
-              style={{ color: "var(--text-secondary)" }}
-            >
-              Home
-            </Link>
-            <a
-              href="/blog/rss.xml"
-              aria-label="RSS Feed"
-              className="transition-colors duration-150 hover:text-[--brand]"
-              style={{ color: "var(--text-muted)" }}
-            >
-              <Rss className="w-4 h-4" />
-            </a>
-          </div>
+          <Link
+            href="/"
+            className="text-sm transition-colors duration-150 hover:text-[--brand]"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            Home
+          </Link>
         </nav>
       </header>
 
