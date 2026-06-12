@@ -1,197 +1,99 @@
-// app/blog/page.tsx
 import type { Metadata } from "next"
-import { BlogHeader } from "@/components/blog/blog-header"
-import { BlogGrid } from "@/components/blog/blog-grid"
-import { BlogSidebar } from "@/components/blog/blog-sidebar"
+import Link from "next/link"
+import { Zap, Rss } from "lucide-react"
 import { Footer } from "@/components/footer"
+import { BlogGrid } from "@/components/blog/blog-grid"
 import { getAllPosts } from "@/lib/blog"
 
 export const metadata: Metadata = {
-  title: "Blog Fluintech - Automação e IA para Empresas | Guias e Tutoriais",
+  title: "Blog — Fluintech",
   description:
-    "Aprenda sobre automação de atendimento, chatbots com IA, WhatsApp Business e transformação digital. Guias práticos, casos de uso e tendências para empresas brasileiras.",
-  keywords: [
-    "blog automação empresarial",
-    "inteligência artificial para negócios",
-    "chatbot whatsapp tutorial",
-    "automação de atendimento guia",
-    "IA conversacional",
-    "transformação digital empresas",
-    "atendimento automatizado dicas",
-    "whatsapp business automação",
-    "como implementar chatbot",
-    "ROI automação atendimento"
-  ],
-  authors: [{ name: "Equipe Fluintech", url: "https://www.fluintech.com.br" }],
-  creator: "Fluintech",
-  publisher: "Fluintech",
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    }
-  },
-  openGraph: {
-    title: "Blog Fluintech - Automação e IA para Empresas",
-    description: "Guias práticos sobre automação de atendimento, chatbots e transformação digital para empresas brasileiras",
-    url: "https://www.fluintech.com.br/blog",
-    siteName: "Fluintech",
-    images: [
-      {
-        url: "/blog-thumbnail.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Blog Fluintech - Automação com IA e Chatbots para Empresas",
-      },
-    ],
-    locale: "pt_BR",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Blog Fluintech - Automação e IA para Empresas",
-    description: "Guias práticos sobre automação de atendimento, chatbots e transformação digital",
-    images: ["/blog-thumbnail.jpg"],
-    creator: "@fluintech",
-    site: "@fluintech",
-  },
+    "Insights sobre agentes de IA, automação de operações e engenharia de contexto para empresas que querem resultado real.",
   alternates: {
     canonical: "https://www.fluintech.com.br/blog",
     types: {
-      'application/rss+xml': [
-        {
-          url: 'https://www.fluintech.com.br/blog/rss.xml',
-          title: 'Blog Fluintech RSS Feed'
-        }
+      "application/rss+xml": [
+        { url: "https://www.fluintech.com.br/blog/rss.xml", title: "Blog Fluintech RSS" },
       ],
-    }
-  },
-}
-
-// JSON-LD structured data for SEO
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Blog",
-  name: "Blog Fluintech",
-  description: "Insights sobre inteligência artificial, automação de atendimento e transformação digital para empresas brasileiras",
-  url: "https://www.fluintech.com.br/blog",
-  inLanguage: "pt-BR",
-  publisher: {
-    "@type": "Organization",
-    name: "Fluintech",
-    url: "https://www.fluintech.com.br",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://www.fluintech.com.br/logo.png",
-      width: 600,
-      height: 60,
     },
-    sameAs: [
-      "https://twitter.com/fluintech",
-      "https://www.linkedin.com/company/fluintech",
-      "https://www.instagram.com/fluintech"
-    ]
   },
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": "https://www.fluintech.com.br/blog",
+  openGraph: {
+    title: "Blog — Fluintech",
+    description: "Insights sobre agentes de IA, automação e engenharia de contexto.",
+    url: "https://www.fluintech.com.br/blog",
+    type: "website",
   },
-}
-
-// Breadcrumb structured data
-const breadcrumbJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    {
-      "@type": "ListItem",
-      position: 1,
-      name: "Início",
-      item: "https://www.fluintech.com.br"
-    },
-    {
-      "@type": "ListItem",
-      position: 2,
-      name: "Blog",
-      item: "https://www.fluintech.com.br/blog"
-    }
-  ]
 }
 
 export default async function BlogPage() {
   const posts = await getAllPosts()
 
   return (
-    <>
-      {/* JSON-LD for Blog */}
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} 
-      />
-      
-      {/* JSON-LD for Breadcrumb */}
-      <script 
-        type="application/ld+json" 
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} 
-      />
-
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
-        <BlogHeader />
-
-        <main className="pt-24 pb-16">
-          <div className="max-w-7xl mx-auto px-4 lg:px-8">
-            {/* SEO-friendly heading */}
-            <div className="mb-12 text-center">
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                Blog Fluintech
-              </h1>
-              <p className="text-xl text-purple-200 max-w-3xl mx-auto">
-                Descubra como transformar seu negócio com automação inteligente e IA conversacional
-              </p>
+    <div className="min-h-screen" style={{ background: "var(--surface)" }}>
+      {/* Navbar */}
+      <header
+        className="sticky top-0 z-50"
+        style={{
+          borderBottom: "1px solid var(--surface-border)",
+          background: "color-mix(in srgb, var(--surface) 88%, transparent)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        <nav className="max-w-6xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div
+              className="w-6 h-6 rounded-md flex items-center justify-center"
+              style={{ background: "var(--brand-subtle)", border: "1px solid var(--brand-border)" }}
+              aria-hidden="true"
+            >
+              <Zap className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
             </div>
-
-            {/* Google Ads - Header Banner */}
-            {/* 
-            <div className="mb-8 text-center">
-              <!-- Google Ads Header Banner 728x90 -->
-              <!-- Adicionar código do Google Ads aqui -->
-            </div>
-            */}
-
-            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-              <div className="lg:col-span-3">
-                <BlogGrid posts={posts} />
-              </div>
-
-              <aside className="lg:col-span-1" aria-label="Barra lateral do blog">
-                <BlogSidebar />
-
-                {/* Google Ads - Sidebar */}
-                {/* 
-                <div className="mt-8">
-                  <!-- Google Ads Sidebar 300x250 -->
-                  <!-- Adicionar código do Google Ads aqui -->
-                </div>
-                */}
-              </aside>
-            </div>
-
-            {/* Google Ads - Footer Banner */}
-            {/* 
-            <div className="mt-16 text-center">
-              <!-- Google Ads Footer Banner 728x90 -->
-              <!-- Adicionar código do Google Ads aqui -->
-            </div>
-            */}
+            <span className="font-medium" style={{ color: "var(--text-primary)" }}>
+              Fluintech
+            </span>
+          </Link>
+          <div className="flex items-center gap-6">
+            <Link
+              href="/"
+              className="text-sm transition-colors duration-150 hover:text-[--text-primary]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Home
+            </Link>
+            <a
+              href="/blog/rss.xml"
+              aria-label="RSS Feed"
+              className="transition-colors duration-150 hover:text-[--brand]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              <Rss className="w-4 h-4" />
+            </a>
           </div>
-        </main>
+        </nav>
+      </header>
 
-        <Footer />
-      </div>
-    </>
+      <main className="max-w-6xl mx-auto px-4 lg:px-8 py-16">
+        {/* Page header */}
+        <div className="mb-12">
+          <p
+            className="font-mono text-xs font-medium uppercase tracking-widest mb-3"
+            style={{ color: "var(--brand)" }}
+          >
+            Blog
+          </p>
+          <h1 className="text-3xl font-medium tracking-tight mb-3" style={{ color: "var(--text-primary)" }}>
+            Insights sobre agentes de IA.
+          </h1>
+          <p style={{ color: "var(--text-secondary)" }}>
+            Engenharia, automação e operações reais.
+          </p>
+        </div>
+
+        {/* Post grid */}
+        <BlogGrid posts={posts} />
+      </main>
+
+      <Footer />
+    </div>
   )
 }

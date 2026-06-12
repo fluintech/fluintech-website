@@ -617,6 +617,13 @@ export default function FluintechHome() {
             >
               Para quem
             </a>
+            <a
+              href="/blog"
+              className="text-sm transition-colors duration-150 hover:text-[--text-primary]"
+              style={{ color: "var(--text-secondary)" }}
+            >
+              Blog
+            </a>
           </div>
 
           <a
@@ -666,6 +673,14 @@ export default function FluintechHome() {
                 onClick={() => setMenuOpen(false)}
               >
                 Para quem
+              </a>
+              <a
+                href="/blog"
+                className="text-sm"
+                style={{ color: "var(--text-secondary)" }}
+                onClick={() => setMenuOpen(false)}
+              >
+                Blog
               </a>
               <a
                 href={WHATSAPP_URL}
