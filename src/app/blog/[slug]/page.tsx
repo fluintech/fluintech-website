@@ -4,6 +4,7 @@ import { ArrowLeft, Calendar, Clock, Zap } from "lucide-react"
 import { getAllPosts } from "@/lib/blog"
 import { parseMarkdown } from "@/lib/markdown"
 import { Footer } from "@/components/footer"
+import { ShareButtons } from "@/components/blog/share-buttons"
 import type { Metadata } from "next"
 
 interface Props {
@@ -172,6 +173,12 @@ export default async function BlogPostPage({ params }: Props) {
             ))}
           </div>
         )}
+
+        {/* Share */}
+        <ShareButtons
+          url={`https://www.fluintech.com.br/blog/${post.slug}`}
+          title={post.title}
+        />
 
         {/* Back link */}
         <div className="mt-10">
