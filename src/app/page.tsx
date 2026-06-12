@@ -125,57 +125,65 @@ function Reveal({
   )
 }
 
-const SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#$%&"
-
-function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
-  const [display, setDisplay] = useState("")
-  const [done, setDone] = useState(false)
+function StreamText({
+  text,
+  delay = 0,
+  onDone,
+}: {
+  text: string
+  delay?: number
+  onDone?: () => void
+}) {
+  const [displayed, setDisplayed] = useState("")
+  const [cursor, setCursor] = useState(false)
+  const onDoneRef = useRef(onDone)
+  onDoneRef.current = onDone
 
   useEffect(() => {
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setDisplay(text)
-      setDone(true)
+      setDisplayed(text)
+      onDoneRef.current?.()
       return
     }
 
-    let frame = 0
-    let rafId: number
-    const totalFrames = 90
+    let id: ReturnType<typeof setTimeout>
 
-    const start = () => {
-      const tick = () => {
-        frame++
-        const progress = frame / totalFrames
-        const settled = Math.floor(text.length * progress)
-        let out = text.slice(0, settled)
-        for (let i = settled; i < text.length; i++) {
-          out += text[i] === " " ? " " : SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)]
+    id = setTimeout(() => {
+      setCursor(true)
+      id = setTimeout(() => {
+        let i = 0
+        const tick = () => {
+          i++
+          setDisplayed(text.slice(0, i))
+          if (i < text.length) {
+            id = setTimeout(tick, 28 + Math.random() * 18)
+          } else {
+            id = setTimeout(() => {
+              setCursor(false)
+              onDoneRef.current?.()
+            }, 320)
+          }
         }
-        setDisplay(out)
-        if (frame < totalFrames) {
-          rafId = requestAnimationFrame(tick)
-        } else {
-          setDisplay(text)
-          setDone(true)
-        }
-      }
-      rafId = requestAnimationFrame(tick)
-    }
+        tick()
+      }, 340)
+    }, delay)
 
-    const timeoutId = setTimeout(start, delay)
-    return () => {
-      clearTimeout(timeoutId)
-      cancelAnimationFrame(rafId)
-    }
+    return () => clearTimeout(id)
   }, [text, delay])
 
   return (
-    <span aria-label={text} style={done ? undefined : { color: "var(--text-primary)" }}>
-      {display || " "}
+    <span aria-label={text}>
+      {displayed}
+      {cursor && (
+        <span
+          className="inline-block w-[2px] h-[0.82em] ml-px animate-caret"
+          style={{ background: "currentColor", verticalAlign: "middle" }}
+          aria-hidden="true"
+        />
+      )}
     </span>
   )
 }
-
 function NeuralCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
@@ -562,6 +570,7 @@ function Marquee() {
 
 export default function FluintechHome() {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [line2Ready, setLine2Ready] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
@@ -724,10 +733,10 @@ export default function FluintechHome() {
                   className="text-4xl md:text-5xl font-medium tracking-tight leading-tight mb-4"
                   style={{ color: "var(--text-primary)" }}
                 >
-                  <ScrambleText text="Sua operação, comandada" delay={200} />
+                  <StreamText text="Sua operação, comandada" delay={300} onDone={() => setLine2Ready(true)} />
                   <br />
                   <span style={{ color: "var(--brand)" }}>
-                    <ScrambleText text="por agentes que agem." delay={900} />
+                    {line2Ready ? <StreamText text="por agentes que agem." /> : " "}
                   </span>
                 </h1>
 
