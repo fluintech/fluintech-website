@@ -16,11 +16,7 @@ import {
   Wrench,
   GraduationCap,
   Shield,
-  GitBranch,
   Cpu,
-  Layers,
-  BookOpen,
-  Terminal,
   UserCheck,
   Gauge,
 } from "lucide-react"
@@ -72,15 +68,19 @@ const MISSION_FEEDS: Record<string, FeedEvent[]> = {
   ],
 }
 
-const STACK_ITEMS = [
-  { icon: Wrench, label: "Tools" },
-  { icon: GitBranch, label: "MCPs" },
-  { icon: Layers, label: "Skills" },
-  { icon: BookOpen, label: "Rules" },
-  { icon: Terminal, label: "Prompt Eng." },
-  { icon: Cpu, label: "Context Eng." },
-  { icon: FileText, label: "SDD" },
-  { icon: Gauge, label: "Harness" },
+const AGENT_CONFIG = [
+  { id: "qualificacao", name: "Qualificação", tools: ["CRM", "WhatsApp"], tasksActive: 3 },
+  { id: "suporte", name: "Suporte", tools: ["Base KB", "Tickets"], tasksActive: 7 },
+  { id: "agenda", name: "Agenda", tools: ["Calendário", "CRM"], tasksActive: 2 },
+]
+
+const LIVE_AGENT_EVENTS: { agent: string; text: string; kind: FeedEvent["kind"] }[] = [
+  { agent: "Qualificação", text: "Lead #347 qualificado → comercial", kind: "ok" },
+  { agent: "Orquestrador", text: "Roteando ticket #112 para Suporte", kind: "info" },
+  { agent: "Suporte", text: "Aguardando aprovação humana", kind: "human" },
+  { agent: "Orquestrador", text: "Guardrail: dados mascarados", kind: "sec" },
+  { agent: "Agenda", text: "Conflito resolvido · horário confirmado", kind: "ok" },
+  { agent: "Suporte", text: "Ticket #112 resolvido ✓", kind: "ok" },
 ]
 
 function WhatsAppIcon() {
@@ -140,7 +140,7 @@ function ScrambleText({ text, delay = 0 }: { text: string; delay?: number }) {
 
     let frame = 0
     let rafId: number
-    const totalFrames = 40
+    const totalFrames = 90
 
     const start = () => {
       const tick = () => {
@@ -393,63 +393,137 @@ function MissionControl() {
   )
 }
 
-function StackOrbit() {
+function AgentDashboard() {
+  const [events, setEvents] = useState<Array<{ agent: string; text: string; kind: FeedEvent["kind"]; id: number }>>([])
+  const idRef = useRef(0)
+
+  useEffect(() => {
+    let idx = 0
+    let timeoutId: ReturnType<typeof setTimeout>
+
+    const addEvent = () => {
+      const ev = LIVE_AGENT_EVENTS[idx % LIVE_AGENT_EVENTS.length]
+      idx++
+      setEvents((prev) => [...prev.slice(-3), { ...ev, id: idRef.current++ }])
+      timeoutId = setTimeout(addEvent, 1400 + Math.random() * 1200)
+    }
+
+    timeoutId = setTimeout(addEvent, 600)
+    return () => clearTimeout(timeoutId)
+  }, [])
+
   return (
-    <div className="relative w-full max-w-md mx-auto aspect-square">
+    <div
+      className="rounded-xl overflow-hidden"
+      style={{ border: "1px solid var(--surface-border)", background: "var(--surface-card)" }}
+    >
+      {/* Header */}
       <div
-        className="absolute inset-[12%] rounded-full"
-        style={{ border: "1px dashed var(--surface-border)" }}
-        aria-hidden="true"
-      />
-      <div
-        className="absolute inset-[30%] rounded-full"
-        style={{ border: "1px dashed var(--surface-border)" }}
-        aria-hidden="true"
-      />
-
-      <div className="absolute inset-0 animate-orbit">
-        {STACK_ITEMS.map((item, i) => {
-          const angle = (i / STACK_ITEMS.length) * 360
-          const Icon = item.icon
-          return (
-            <div
-              key={item.label}
-              className="absolute top-1/2 left-1/2"
-              style={{ transform: `rotate(${angle}deg) translateY(-44%)` }}
-            >
-              <div className="animate-orbit-counter" style={{ transform: `rotate(-${angle}deg)` }}>
-                <div
-                  className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md -translate-x-1/2 whitespace-nowrap"
-                  style={{
-                    background: "var(--surface-card)",
-                    border: "1px solid var(--surface-border)",
-                  }}
-                >
-                  <Icon className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
-                  <span className="font-mono text-xs" style={{ color: "var(--text-secondary)" }}>
-                    {item.label}
-                  </span>
-                </div>
-              </div>
-            </div>
-          )
-        })}
-      </div>
-
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div
-          className="relative w-24 h-24 rounded-2xl flex flex-col items-center justify-center gap-1 pulse-ring"
-          style={{
-            background: "var(--surface-card)",
-            border: "1px solid var(--brand-border)",
-            boxShadow: "0 0 48px -8px var(--brand-glow)",
-          }}
-        >
-          <Zap className="w-6 h-6" style={{ color: "var(--brand)" }} />
-          <span className="font-mono text-[11px] uppercase tracking-widest" style={{ color: "var(--brand)" }}>
-            agente
+        className="flex items-center px-4 py-2.5"
+        style={{ borderBottom: "1px solid var(--surface-border)" }}
+      >
+        <span className="font-mono text-[11px] uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>
+          sistema de agentes
+        </span>
+        <div className="ml-auto flex items-center gap-1.5">
+          <span className="relative inline-flex w-1.5 h-1.5">
+            <span
+              className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-60"
+              style={{ background: "var(--brand)" }}
+            />
+            <span className="relative inline-flex w-1.5 h-1.5 rounded-full" style={{ background: "var(--brand)" }} />
+          </span>
+          <span className="font-mono text-xs" style={{ color: "var(--brand)" }}>
+            3 online
           </span>
         </div>
+      </div>
+
+      {/* Orchestrator */}
+      <div className="flex justify-center px-4 pt-4 pb-2">
+        <div
+          className="flex items-center gap-2 px-3 py-2 rounded-md"
+          style={{ background: "var(--brand-subtle)", border: "1px solid var(--brand-border)" }}
+        >
+          <Cpu className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
+          <span className="font-mono text-xs font-medium" style={{ color: "var(--brand)" }}>
+            Orquestrador
+          </span>
+        </div>
+      </div>
+
+      {/* Tree connector */}
+      <div className="flex justify-center">
+        <div className="w-px h-3" style={{ background: "var(--surface-border)" }} />
+      </div>
+      <div className="mx-4 h-px" style={{ background: "var(--surface-border)" }} />
+
+      {/* Agent cards */}
+      <div className="grid grid-cols-3 gap-2 px-4 pb-4 pt-0">
+        {AGENT_CONFIG.map((agent) => (
+          <div key={agent.id} className="flex flex-col items-center">
+            <div className="w-px h-3" style={{ background: "var(--surface-border)" }} />
+            <div
+              className="w-full rounded-md p-2.5 flex flex-col gap-1.5"
+              style={{ background: "var(--surface)", border: "1px solid var(--surface-border)" }}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[11px] font-medium leading-tight" style={{ color: "var(--text-primary)" }}>
+                  {agent.name}
+                </span>
+                <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "var(--brand)" }} />
+              </div>
+              <span className="font-mono text-[10px]" style={{ color: "var(--text-muted)" }}>
+                {agent.tasksActive} ativas
+              </span>
+              <div className="flex flex-wrap gap-0.5">
+                {agent.tools.map((tool) => (
+                  <span
+                    key={tool}
+                    className="font-mono text-[9px] px-1 py-px rounded"
+                    style={{ background: "var(--surface-border)", color: "var(--text-muted)" }}
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Live feed */}
+      <div
+        className="px-4 pt-3 pb-3 min-h-[76px]"
+        style={{ borderTop: "1px solid var(--surface-border)" }}
+      >
+        <div className="space-y-1.5 font-mono text-[11px]">
+          {events.map((ev) => (
+            <div key={ev.id} className="flex items-start gap-1.5 animate-fade-in">
+              <span className="shrink-0" style={{ color: "var(--text-muted)" }}>
+                {ev.agent}
+              </span>
+              <span style={{ color: "var(--surface-border)" }}>·</span>
+              <span style={{ color: eventColor(ev.kind) }}>{ev.text}</span>
+            </div>
+          ))}
+          {events.length === 0 && (
+            <span className="inline-block w-1.5 h-3.5 animate-caret" style={{ background: "var(--brand)" }} />
+          )}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div
+        className="flex items-center justify-between px-4 py-2 font-mono text-[10px]"
+        style={{ borderTop: "1px solid var(--surface-border)", color: "var(--text-muted)" }}
+      >
+        <span className="flex items-center gap-1">
+          <UserCheck className="w-3 h-3" style={{ color: "var(--signal-amber)" }} />
+          human in the loop
+        </span>
+        <span>guardrails</span>
+        <span>auditoria</span>
       </div>
     </div>
   )
@@ -510,7 +584,7 @@ export default function FluintechHome() {
         <nav className="max-w-6xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
           <a href="/" className="flex items-center gap-2.5">
             <div
-              className="relative w-6 h-6 rounded-md flex items-center justify-center pulse-ring"
+              className="relative w-6 h-6 rounded-md flex items-center justify-center"
               style={{ background: "var(--brand-subtle)", border: "1px solid var(--brand-border)" }}
               aria-hidden="true"
             >
@@ -734,7 +808,7 @@ export default function FluintechHome() {
               </Reveal>
 
               <Reveal delay={200}>
-                <StackOrbit />
+                <AgentDashboard />
               </Reveal>
             </div>
           </div>
