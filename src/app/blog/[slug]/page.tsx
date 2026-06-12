@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { ArrowLeft, Calendar, Clock, Zap } from "lucide-react"
 import { getAllPosts } from "@/lib/blog"
 import { parseMarkdown } from "@/lib/markdown"
@@ -61,7 +62,7 @@ export default async function BlogPostPage({ params }: Props) {
     author: { "@type": "Person", name: post.author ?? "Equipe Fluintech" },
     publisher: { "@type": "Organization", name: "Fluintech", url: "https://www.fluintech.com.br" },
     mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
-    image: { "@type": "ImageObject", url: `${postUrl}/opengraph-image`, width: 1200, height: 630 },
+    image: { "@type": "ImageObject", url: `https://www.fluintech.com.br${post.image}`, width: 1200, height: 630 },
     inLanguage: "pt-BR",
   }
 
@@ -159,6 +160,21 @@ export default async function BlogPostPage({ params }: Props) {
             {post.author && <span>{post.author}</span>}
           </div>
         </header>
+
+        {/* Cover image */}
+        <div
+          className="relative w-full aspect-video rounded-xl overflow-hidden mb-10"
+          style={{ border: "1px solid var(--surface-border)" }}
+        >
+          <Image
+            src={post.image}
+            alt={post.title}
+            fill
+            className="object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, 768px"
+          />
+        </div>
 
         {/* Article body */}
         <div
