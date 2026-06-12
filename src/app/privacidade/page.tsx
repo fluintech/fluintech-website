@@ -1,153 +1,214 @@
-import { Button } from "@/components/ui/button"
-import { ArrowLeft } from "lucide-react"
 import Link from "next/link"
+import { ArrowLeft, Zap } from "lucide-react"
+import { Footer } from "@/components/footer"
+
+function Section({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section>
+      <h2 className="text-base font-medium mb-4" style={{ color: "var(--text-primary)" }}>
+        {title}
+      </h2>
+      <div className="space-y-3 text-sm leading-relaxed" style={{ color: "var(--text-secondary)" }}>
+        {children}
+      </div>
+    </section>
+  )
+}
+
+function Item({ label, children }: { label?: string; children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2.5">
+      <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ background: "var(--brand)" }} />
+      <span>
+        {label && (
+          <span className="font-medium" style={{ color: "var(--text-primary)" }}>
+            {label}:{" "}
+          </span>
+        )}
+        {children}
+      </span>
+    </li>
+  )
+}
 
 export default function PoliticaPrivacidade() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900">
-      <div className="max-w-4xl mx-auto px-4 py-16 lg:px-8">
-        <Link href="/">
-          <Button
-            variant="outline"
-            className="mb-8 border-purple-400 text-white hover:bg-purple-800/50 bg-purple-800/30"
+    <div className="min-h-screen" style={{ background: "var(--surface)" }}>
+      <header
+        className="sticky top-0 z-50"
+        style={{
+          borderBottom: "1px solid var(--surface-border)",
+          background: "color-mix(in srgb, var(--surface) 88%, transparent)",
+          backdropFilter: "blur(12px)",
+        }}
+      >
+        <nav className="max-w-4xl mx-auto px-4 lg:px-8 h-14 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div
+              className="w-6 h-6 rounded-md flex items-center justify-center"
+              style={{ background: "var(--brand-subtle)", border: "1px solid var(--brand-border)" }}
+              aria-hidden="true"
+            >
+              <Zap className="w-3.5 h-3.5" style={{ color: "var(--brand)" }} />
+            </div>
+            <span className="font-medium" style={{ color: "var(--text-primary)" }}>
+              Fluintech
+            </span>
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-sm transition-colors duration-150 hover:text-[--brand]"
+            style={{ color: "var(--text-secondary)" }}
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
-            Voltar ao Início
-          </Button>
-        </Link>
+            <ArrowLeft className="w-4 h-4" />
+            Voltar
+          </Link>
+        </nav>
+      </header>
 
-        <div className="bg-black/40 backdrop-blur-sm rounded-2xl border border-purple-700/50 p-8 lg:p-12">
-          <h1 className="text-4xl font-bold text-white mb-8">Política de Privacidade</h1>
+      <main className="max-w-4xl mx-auto px-4 lg:px-8 py-16">
+        <div className="mb-10">
+          <p
+            className="font-mono text-xs font-medium uppercase tracking-widest mb-3"
+            style={{ color: "var(--brand)" }}
+          >
+            Jurídico
+          </p>
+          <h1 className="text-3xl font-medium tracking-tight" style={{ color: "var(--text-primary)" }}>
+            Política de Privacidade
+          </h1>
+        </div>
 
-          <div className="prose prose-invert max-w-none">
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-4">1. Dados Coletados</h2>
-              <p className="text-gray-100 leading-relaxed mb-4">Coletamos as seguintes categorias de dados pessoais:</p>
-              <ul className="text-gray-100 leading-relaxed space-y-2">
-                <li>
-                  • <strong>Dados de identificação:</strong> nome, e-mail, telefone, empresa
-                </li>
-                <li>
-                  • <strong>Dados de uso:</strong> logs de acesso, interações com a plataforma, preferências
-                </li>
-                <li>
-                  • <strong>Dados técnicos:</strong> endereço IP, tipo de navegador, sistema operacional
-                </li>
-                <li>
-                  • <strong>Dados de comunicação:</strong> mensagens trocadas através dos chatbots e sistema
-                </li>
+        <div
+          className="rounded-xl p-8 lg:p-10"
+          style={{ border: "1px solid var(--surface-border)", background: "var(--surface-card)" }}
+        >
+          <div className="space-y-8">
+            <Section title="1. Dados Coletados">
+              <p>Coletamos as seguintes categorias de dados pessoais:</p>
+              <ul className="space-y-2.5">
+                <Item label="Dados de identificação">nome, e-mail, telefone, empresa</Item>
+                <Item label="Dados de uso">logs de acesso, interações com a plataforma, preferências</Item>
+                <Item label="Dados técnicos">endereço IP, tipo de navegador, sistema operacional</Item>
+                <Item label="Dados de comunicação">mensagens trocadas através dos chatbots e sistema</Item>
               </ul>
-            </section>
+            </Section>
 
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-4">2. Finalidade do Uso dos Dados</h2>
-              <p className="text-gray-100 leading-relaxed mb-4">
-                Utilizamos seus dados pessoais para as seguintes finalidades:
-              </p>
-              <ul className="text-gray-100 leading-relaxed space-y-2">
-                <li>• Prestação dos serviços de automação e IA</li>
-                <li>• Melhoria contínua dos algoritmos e funcionalidades</li>
-                <li>• Suporte técnico e atendimento ao cliente</li>
-                <li>• Comunicação sobre atualizações e novos recursos</li>
-                <li>• Análises estatísticas e relatórios de desempenho</li>
-                <li>• Cumprimento de obrigações legais e regulamentares</li>
-              </ul>
-            </section>
+            <div style={{ borderTop: "1px solid var(--surface-border)" }} className="pt-8">
+              <Section title="2. Finalidade do Uso dos Dados">
+                <p>Utilizamos seus dados pessoais para as seguintes finalidades:</p>
+                <ul className="space-y-2.5">
+                  <Item>Prestação dos serviços de automação e IA</Item>
+                  <Item>Melhoria contínua dos algoritmos e funcionalidades</Item>
+                  <Item>Suporte técnico e atendimento ao cliente</Item>
+                  <Item>Comunicação sobre atualizações e novos recursos</Item>
+                  <Item>Análises estatísticas e relatórios de desempenho</Item>
+                  <Item>Cumprimento de obrigações legais e regulamentares</Item>
+                </ul>
+              </Section>
+            </div>
 
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-4">3. Compartilhamento com Terceiros</h2>
-              <p className="text-gray-100 leading-relaxed mb-4">
-                Seus dados podem ser compartilhados nas seguintes situações:
-              </p>
-              <ul className="text-gray-100 leading-relaxed space-y-2">
-                <li>
-                  • <strong>Provedores de serviços:</strong> empresas que nos auxiliam na prestação dos serviços
-                  (hospedagem, analytics)
-                </li>
-                <li>
-                  • <strong>Obrigações legais:</strong> quando exigido por lei ou ordem judicial
-                </li>
-                <li>
-                  • <strong>Proteção de direitos:</strong> para proteger nossos direitos, propriedade ou segurança
-                </li>
-              </ul>
-              <p className="text-gray-100 leading-relaxed mt-4">
-                Não vendemos, alugamos ou comercializamos seus dados pessoais com terceiros para fins de marketing.
-              </p>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-4">4. Direitos do Usuário</h2>
-              <p className="text-gray-100 leading-relaxed mb-4">
-                Conforme a Lei Geral de Proteção de Dados (LGPD), você possui os seguintes direitos:
-              </p>
-              <ul className="text-gray-100 leading-relaxed space-y-2">
-                <li>
-                  • <strong>Acesso:</strong> solicitar informações sobre o tratamento de seus dados
-                </li>
-                <li>
-                  • <strong>Correção:</strong> solicitar a correção de dados incompletos ou inexatos
-                </li>
-                <li>
-                  • <strong>Exclusão:</strong> solicitar a eliminação de dados desnecessários ou tratados em
-                  desconformidade
-                </li>
-                <li>
-                  • <strong>Portabilidade:</strong> solicitar a transferência de dados para outro fornecedor
-                </li>
-                <li>
-                  • <strong>Oposição:</strong> opor-se ao tratamento de dados em determinadas situações
-                </li>
-                <li>
-                  • <strong>Revogação:</strong> revogar o consentimento a qualquer momento
-                </li>
-              </ul>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-4">5. Segurança dos Dados</h2>
-              <p className="text-gray-100 leading-relaxed mb-4">
-                Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados pessoais:
-              </p>
-              <ul className="text-gray-100 leading-relaxed space-y-2">
-                <li>• Criptografia de dados em trânsito e em repouso</li>
-                <li>• Controles de acesso rigorosos e autenticação multifator</li>
-                <li>• Monitoramento contínuo de segurança e detecção de ameaças</li>
-                <li>• Backups regulares e planos de recuperação de desastres</li>
-                <li>• Treinamento regular da equipe sobre proteção de dados</li>
-              </ul>
-            </section>
-
-            <section className="mb-8">
-              <h2 className="text-2xl font-semibold text-white mb-4">6. Contato para Dúvidas</h2>
-              <p className="text-gray-100 leading-relaxed mb-4">
-                Para exercer seus direitos ou esclarecer dúvidas sobre esta política, entre em contato:
-              </p>
-              <div className="bg-black/50 rounded-lg p-6 border border-purple-600/50">
-                <p className="text-gray-100">
-                  <strong>E-mail:</strong> privacidade@fluintech.com.br
+            <div style={{ borderTop: "1px solid var(--surface-border)" }} className="pt-8">
+              <Section title="3. Compartilhamento com Terceiros">
+                <p>Seus dados podem ser compartilhados nas seguintes situações:</p>
+                <ul className="space-y-2.5">
+                  <Item label="Provedores de serviços">
+                    empresas que nos auxiliam na prestação dos serviços (hospedagem, analytics)
+                  </Item>
+                  <Item label="Obrigações legais">quando exigido por lei ou ordem judicial</Item>
+                  <Item label="Proteção de direitos">
+                    para proteger nossos direitos, propriedade ou segurança
+                  </Item>
+                </ul>
+                <p>
+                  Não vendemos, alugamos ou comercializamos seus dados pessoais com terceiros para fins
+                  de marketing.
                 </p>
-                <p className="text-gray-100">
-                  <strong>Telefone:</strong> +55 (44) 9999-9999
-                </p>
-                <p className="text-gray-100">
-                  <strong>Endereço:</strong> Maringá, PR – Brasil
-                </p>
-              </div>
-            </section>
+              </Section>
+            </div>
 
-            <div className="mt-12 p-6 bg-black/50 rounded-lg border border-purple-600/50">
-              <p className="text-gray-100 text-sm">
-                <strong>Última atualização:</strong> Janeiro de 2024
-              </p>
-              <p className="text-gray-100 text-sm mt-2">
-                Esta política pode ser atualizada periodicamente. Recomendamos a consulta regular para se manter
-                informado sobre nossas práticas de privacidade.
-              </p>
+            <div style={{ borderTop: "1px solid var(--surface-border)" }} className="pt-8">
+              <Section title="4. Direitos do Usuário (LGPD)">
+                <p>Conforme a Lei Geral de Proteção de Dados (LGPD), voce possui os seguintes direitos:</p>
+                <ul className="space-y-2.5">
+                  <Item label="Acesso">solicitar informações sobre o tratamento de seus dados</Item>
+                  <Item label="Correção">solicitar a correção de dados incompletos ou inexatos</Item>
+                  <Item label="Exclusão">
+                    solicitar a eliminação de dados desnecessários ou tratados em desconformidade
+                  </Item>
+                  <Item label="Portabilidade">solicitar a transferência de dados para outro fornecedor</Item>
+                  <Item label="Oposição">opor-se ao tratamento de dados em determinadas situações</Item>
+                  <Item label="Revogação">revogar o consentimento a qualquer momento</Item>
+                </ul>
+              </Section>
+            </div>
+
+            <div style={{ borderTop: "1px solid var(--surface-border)" }} className="pt-8">
+              <Section title="5. Segurança dos Dados">
+                <p>
+                  Implementamos medidas técnicas e organizacionais adequadas para proteger seus dados
+                  pessoais:
+                </p>
+                <ul className="space-y-2.5">
+                  <Item>Criptografia de dados em trânsito e em repouso</Item>
+                  <Item>Controles de acesso rigorosos e autenticação multifator</Item>
+                  <Item>Monitoramento contínuo de segurança e detecção de ameaças</Item>
+                  <Item>Backups regulares e planos de recuperação de desastres</Item>
+                  <Item>Treinamento regular da equipe sobre proteção de dados</Item>
+                </ul>
+              </Section>
+            </div>
+
+            <div style={{ borderTop: "1px solid var(--surface-border)" }} className="pt-8">
+              <Section title="6. Contato">
+                <p>Para exercer seus direitos ou esclarecer dúvidas sobre esta política:</p>
+                <div
+                  className="mt-4 rounded-lg p-5 space-y-2 font-mono text-xs"
+                  style={{
+                    border: "1px solid var(--surface-border)",
+                    background: "var(--surface)",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  <p>
+                    <span style={{ color: "var(--text-secondary)" }}>E-mail</span>
+                    {"  "}
+                    <a
+                      href="mailto:privacidade@fluintech.com.br"
+                      className="transition-colors duration-150 hover:text-[--brand]"
+                      style={{ color: "var(--brand)" }}
+                    >
+                      privacidade@fluintech.com.br
+                    </a>
+                  </p>
+                  <p>
+                    <span style={{ color: "var(--text-secondary)" }}>Telefone</span>
+                    {"  "}+55 (44) 3101-0224
+                  </p>
+                  <p>
+                    <span style={{ color: "var(--text-secondary)" }}>Endereco</span>
+                    {"  "}Maringa, PR — Brasil
+                  </p>
+                </div>
+              </Section>
             </div>
           </div>
+
+          <div
+            className="mt-10 pt-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3"
+            style={{ borderTop: "1px solid var(--surface-border)" }}
+          >
+            <p className="font-mono text-xs" style={{ color: "var(--text-muted)" }}>
+              Última atualização: Janeiro de 2024
+            </p>
+            <p className="font-mono text-xs" style={{ color: "var(--text-muted)" }}>
+              Esta política pode ser atualizada periodicamente.
+            </p>
+          </div>
         </div>
-      </div>
+      </main>
+
+      <Footer />
     </div>
   )
 }
