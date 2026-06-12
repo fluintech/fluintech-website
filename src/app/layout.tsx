@@ -39,12 +39,12 @@ export const metadata: Metadata = {
     title: "Fluintech — Agentes de IA que executam o trabalho pesado",
     description:
       "Implementamos agentes de IA que executam o trabalho pesado para que sua equipe foque no que realmente importa.",
-    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
+    images: [{ url: "/opengraph-image", width: 1200, height: 630, alt: "Fluintech — Agentes de IA que executam o trabalho pesado" }],
   },
   twitter: {
     card: "summary_large_image",
     creator: "@fluintech",
-    images: ["/opengraph-image"],
+    images: [{ url: "/opengraph-image", alt: "Fluintech — Agentes de IA que executam o trabalho pesado" }],
   },
 }
 

@@ -707,6 +707,74 @@ export default function FluintechHome() {
         )}
       </header>
 
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            name: "Implementação de Agentes de IA",
+            description:
+              "Implementamos agentes de IA com arquitetura completa: ferramentas conectadas via MCP, skills especializadas, guardrails e specs aprovadas antes de qualquer linha de código.",
+            provider: { "@type": "Organization", name: "Fluintech", url: "https://www.fluintech.com.br" },
+            serviceType: "Inteligência Artificial e Automação",
+            areaServed: { "@type": "Country", name: "Brasil" },
+            inLanguage: "pt-BR",
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "O que a Fluintech faz?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Implementamos agentes de IA que executam o trabalho operacional da sua empresa: respondem, decidem, encaminham e registram sem intervenção humana constante. Operamos com método próprio, do diagnóstico ao primeiro agente em 30 dias.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Qual a diferença entre um agente de IA e um chatbot?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Chatbots respondem perguntas. Agentes executam tarefas completas: consultam sistemas via MCP, tomam decisões, registram resultados e escalam com o volume da operação. A Fluintech não entrega bots de resposta automática.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Quanto tempo leva para ter o primeiro agente funcionando?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Do primeiro diagnóstico ao primeiro agente operacional em 30 dias. O processo passa por quatro etapas: diagnóstico, especificação aprovada, produção com resultados mensuráveis e transferência de autonomia para sua equipe.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Para quem é a Fluintech?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Atendemos startups que precisam escalar operação sem aumentar headcount, pequenas e médias empresas com processos manuais repetitivos, e empresas que já tentaram adotar IA mas não obtiveram resultado real.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "O que é Spec-Driven Development?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "É o método da Fluintech: cada agente tem um documento de especificação aprovado por você antes de qualquer linha de código ser escrita. O que for acordado na spec é exatamente o que será construído.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
+
       <main>
         {/* Hero */}
         <section className="relative">

@@ -49,6 +49,8 @@ export default async function BlogPostPage({ params }: Props) {
 
   if (!post) notFound()
 
+  const postUrl = `https://www.fluintech.com.br/blog/${post.slug}`
+
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -58,13 +60,25 @@ export default async function BlogPostPage({ params }: Props) {
     dateModified: post.updatedAt ?? post.date,
     author: { "@type": "Person", name: post.author ?? "Equipe Fluintech" },
     publisher: { "@type": "Organization", name: "Fluintech", url: "https://www.fluintech.com.br" },
-    mainEntityOfPage: { "@type": "WebPage", "@id": `https://www.fluintech.com.br/blog/${post.slug}` },
+    mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+    image: { "@type": "ImageObject", url: `${postUrl}/opengraph-image`, width: 1200, height: 630 },
     inLanguage: "pt-BR",
+  }
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://www.fluintech.com.br" },
+      { "@type": "ListItem", position: 2, name: "Blog", item: "https://www.fluintech.com.br/blog" },
+      { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+    ],
   }
 
   return (
     <div className="min-h-screen" style={{ background: "var(--surface)" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
       {/* Navbar */}
       <header
