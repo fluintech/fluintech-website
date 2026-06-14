@@ -8,7 +8,7 @@ export function StructuredData() {
     '@type': 'Organization',
     name: 'Fluintech',
     url: 'https://www.fluintech.com.br',
-    logo: 'https://www.fluintech.com.br/logo.png',
+    logo: 'https://www.fluintech.com.br/icon.svg',
     description: 'Startup brasileira de automação de atendimento com inteligência artificial',
     foundingDate: '2023',
     address: {

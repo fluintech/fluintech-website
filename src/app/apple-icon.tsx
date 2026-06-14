@@ -9,17 +9,23 @@ export default function AppleIcon() {
     (
       <div
         style={{
-          background: "#131313",
+          background: "#0D1017",
           width: "100%",
           height: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          borderRadius: "36px",
+          borderRadius: "40px",
         }}
       >
-        <svg width="96" height="96" viewBox="0 0 24 24" fill="#00D992">
-          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+        <svg width="140" height="140" viewBox="0 0 100 100" fill="none">
+          <path d="M 14 22 C 38 22 56 47 73 50" stroke="#23C9B6" strokeWidth="6.5" strokeLinecap="round"/>
+          <path d="M 14 50 C 38 50 56 50 73 50" stroke="#23C9B6" strokeWidth="6.5" strokeLinecap="round"/>
+          <path d="M 14 78 C 38 78 56 53 73 50" stroke="#23C9B6" strokeWidth="6.5" strokeLinecap="round"/>
+          <circle cx="14" cy="22" r="4.5" fill="#23C9B6" fillOpacity="0.5"/>
+          <circle cx="14" cy="50" r="4.5" fill="#23C9B6" fillOpacity="0.5"/>
+          <circle cx="14" cy="78" r="4.5" fill="#23C9B6" fillOpacity="0.5"/>
+          <circle cx="73" cy="50" r="12" fill="#23C9B6"/>
         </svg>
       </div>
     ),
